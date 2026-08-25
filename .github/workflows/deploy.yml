@@ -34,8 +34,6 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          docker build \
+          docker build --push \
             -t ${{ secrets.DOCKER_USERNAME }}/front_dep:latest \
             -t ${{ secrets.DOCKER_USERNAME }}/front_dep:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/front_dep:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/front_dep:${{ github.sha }}

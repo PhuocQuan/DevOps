@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  front-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: front-app
+    ports:
+      # Map cổng 8080 trên máy host với cổng 80 của container (Nginx)
+      - "8080:80"
+    environment:
+      - NODE_ENV=production
+    restart: always

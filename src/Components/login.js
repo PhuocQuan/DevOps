@@ -1,86 +1,108 @@
-import { useState } from "react";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../App.css";
-import avatar from "../images/avatar.jpg";
-import axios from "axios";
 
-function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // Trạng thái lưu lỗi
-  const [loading, setLoading] = useState(false); // Trạng thái loading
+const Login = ({ setIsLoggedIn, setIsAdmin, setUser }) => {
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State để kiểm soát hiển thị mật khẩu
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault(); // Ngăn chặn hành vi mặc định của form
-    setLoading(true); // Bắt đầu loading
-    setError(""); // Xóa lỗi trước đó
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/api/login", {
-        username,
-        password,
-      });
-      console.log(response.data); // In ra dữ liệu phản hồi từ server
-      if (response.status === 200) {
-        navigate("/"); // Chuyển hướng tới trang Home
+      const response = await fetch("http://localhost:2300/user");
+      if (!response.ok) {
+        throw new Error("Không thể lấy dữ liệu người dùng từ API.");
+      }
+
+      const users = await response.json();
+      const user = users.find(
+        (user) =>
+          user.username === formData.username && user.password === formData.password
+      );
+
+      if (user) {
+        localStorage.setItem("userData", JSON.stringify(user));
+        setUser(user);
+
+        if (user.username === "admin" && user.password === "admin123") {
+          localStorage.setItem("isAdmin", "true");
+          setIsAdmin(true);
+        } else {
+          localStorage.setItem("isAdmin", "false");
+          setIsAdmin(false);
+        }
+
+        localStorage.setItem("isLoggedIn", "true");
+        setIsLoggedIn(true);
+
+        alert("Đăng nhập thành công!");
+        
+        // Kiểm tra và chuyển hướng về trang trước đó
+        const returnUrl = localStorage.getItem('returnUrl');
+        if (returnUrl) {
+          localStorage.removeItem('returnUrl'); // Xóa returnUrl sau khi sử dụng
+          navigate(returnUrl);
+        } else {
+          navigate(user.username === "admin" ? "/admin" : "/");
+        }
+      } else {
+        setError("Tên đăng nhập hoặc mật khẩu không đúng.");
       }
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setError("Sai tên đăng nhập hoặc mật khẩu!");
-        setUsername("");
-        setPassword("");
-      } else {
-        setError("Lỗi máy chủ! Vui lòng thử lại sau.");
-        navigate("/sorry"); // Chuyển hướng tới trang Sorry nếu lỗi server
-      }
-    } finally {
-      setLoading(false); // Kết thúc loading
+      setError("Đã xảy ra lỗi, vui lòng thử lại.");
+      console.error(error);
     }
   };
 
+  // Cập nhật trạng thái isLoggedIn và isAdmin khi component mount
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedInStatus); // Đảm bảo trạng thái đăng nhập đồng bộ với localStorage
+  }, [setIsLoggedIn]);
+
   return (
-    <div className="header-login">
-      <div className="header_info-login">
-        <div className="login-container">
-          <div className="box-avatar">
-            <img src={avatar} alt="Avatar" />
-          </div>
-          <form className="box-form" onSubmit={handleLogin}>
-            <div className="box-email-password">
-              <label>Email or Phone Number</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </div>
-            <div className="box-email-password">
-              <label>Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            {error && <p className="error-message">{error}</p>}{" "}
-            {/* Hiển thị lỗi */}
-            <div className="for-pass">
-              <a href="#">Forgot Password</a>
-              <a href="#">Sign In</a>
-            </div>
-            <div className="box-button-login">
-              <button type="submit" disabled={loading}>
-                {loading ? "Đang xử lý..." : "Đăng Nhập"}
-              </button>
-            </div>
-          </form>
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2>Đăng Nhập</h2>
+        <input
+          type="text"
+          name="username"
+          placeholder="Tên đăng nhập"
+          value={formData.username}
+          onChange={handleChange}
+        />
+        <div className="password-input-container">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Mật khẩu"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <span
+            className="password-toggle"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "👁️" : "🙈"} {/* Biểu tượng con mắt */}
+          </span>
         </div>
-      </div>
+        <div className="link-container">
+          <a href="#" onClick={() => navigate("/forgotpassword")}>Forgot Password</a>
+          <a href="#" onClick={() => navigate("/signup")}>Sign</a>
+        </div>
+        {error && <small>{error}</small>}
+        <button type="submit">Đăng Nhập</button>
+      </form>
     </div>
   );
-}
+};
 
 export default Login;

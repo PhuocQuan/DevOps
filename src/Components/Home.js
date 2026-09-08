@@ -18,7 +18,7 @@ function Home({ addToCart }) {
 
   // Fetch products from the API
   useEffect(() => {
-    fetch("http://localhost:2300/products")
+    fetch("/api/products")
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);

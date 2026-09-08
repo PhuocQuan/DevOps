@@ -15,7 +15,7 @@ function ProductDetail({ addToCart }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:2300/products");
+        const response = await fetch("/api/products");
         const data = await response.json();
         
         const foundProduct = data.find((p) => p.name === productId);

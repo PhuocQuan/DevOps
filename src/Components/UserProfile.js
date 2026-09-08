@@ -22,7 +22,7 @@ function UserProfile() {
       const { username } = JSON.parse(userData);
       console.log("Đang fetch dữ liệu cho user:", username);
 
-      const response = await fetch("http://localhost:2300/user");
+      const response = await fetch("/api/user");
       if (!response.ok) {
         throw new Error("Không thể lấy thông tin người dùng");
       }
@@ -51,7 +51,7 @@ function UserProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const updateResponse = await fetch(`http://localhost:2300/user/${editedProfile.id}`, {
+        const updateResponse = await fetch(`/api/user/${editedProfile.id}`, {
             method: 'PUT', // Sử dụng PUT để cập nhật user cụ thể
             headers: {
                 'Content-Type': 'application/json',

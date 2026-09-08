@@ -13,7 +13,7 @@ function Cart({ cartItems = [], setCartItems }) {
     setIsLoggedIn(loggedInStatus);
 
     // Fetch products from API
-    fetch("http://localhost:2300/products")
+    fetch("/api/products")
       .then((response) => response.json())
       .then((data) => {
         setProducts(data); // Set the fetched products data

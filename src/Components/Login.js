@@ -17,7 +17,7 @@ const Login = ({ setIsLoggedIn, setIsAdmin, setUser }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:2300/user");
+      const response = await fetch("/api/user");
       if (!response.ok) {
         throw new Error("Không thể lấy dữ liệu người dùng từ API.");
       }

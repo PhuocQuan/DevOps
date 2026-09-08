@@ -47,7 +47,7 @@ const ForgotPassword = () => {
       setErrors(validationErrors);
     } else {
       try {
-        const response = await fetch("http://localhost:2300/user");
+        const response = await fetch("/api/user");
         const users = await response.json();
         
         // Find user matching the form data
@@ -64,7 +64,7 @@ const ForgotPassword = () => {
           user.password = formData.newPassword;
 
           // Send the updated user data back to the API
-          const updateResponse = await fetch(`http://localhost:2300/user/${user.id}`, {
+          const updateResponse = await fetch(`/api/user/${user.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

@@ -97,7 +97,7 @@ const SignUp = () => {
   
     try {
       // Kiểm tra xem thông tin đã tồn tại hay chưa (trùng lặp)
-      const checkResponse = await fetch("http://localhost:2300/user");
+      const checkResponse = await fetch("/api/user");
       const users = await checkResponse.json();
   
       let duplicateErrors = {};
@@ -117,7 +117,7 @@ const SignUp = () => {
       // Nếu không có lỗi, gửi dữ liệu đăng ký lên API
       const { confirmPassword, ...dataToSend } = formData;
   
-      const response = await fetch("http://localhost:2300/user", {
+      const response = await fetch("/api/user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend),

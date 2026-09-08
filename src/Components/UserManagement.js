@@ -24,7 +24,7 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:2300/user");
+      const response = await fetch("/api/user");
       if (response.ok) {
         const data = await response.json();
         setUsers(data); // Cập nhật danh sách người dùng
@@ -65,7 +65,7 @@ const UserManagement = () => {
         console.log("Updating user with ID:", updatedUser.id);
         console.log("Data being sent:", updatedUser);
   
-        const response = await fetch(`http://localhost:2300/user/${updatedUser.id}`, {
+        const response = await fetch(`/api/user/${updatedUser.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedUser),
@@ -81,7 +81,7 @@ const UserManagement = () => {
         }
       } else {
         const newUser = { ...form };
-        const response = await fetch("http://localhost:2300/user", {
+        const response = await fetch("/api/user", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newUser),
@@ -131,7 +131,7 @@ const UserManagement = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:2300/user/${userToDelete.id}`, {
+      const response = await fetch(`/api/user/${userToDelete.id}`, {
         method: "DELETE",
       });
   

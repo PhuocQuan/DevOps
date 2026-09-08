@@ -36,4 +36,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 
 # Chạy Nginx và json-server song song
-CMD json-server --watch /app/db.json --port 2300 & nginx -g "daemon off;"
+CMD json-server --watch /app/db.json --port 2300 --host 127.0.0.1 & nginx -g "daemon off;"

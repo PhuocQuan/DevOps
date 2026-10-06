@@ -4,8 +4,7 @@ services:
   front-app:
     # Lưu ý: docker-compose trên server sẽ TẢI image từ Docker Hub về, 
     # chứ không build từ Dockerfile nữa (Jenkins đã lo việc build)
-    # TODO: Thay chữ [DOCKER_USERNAME_CUA_BAN] thành username thật của bạn trên Docker Hub
-    image: docker.io/[DOCKER_USERNAME_CUA_BAN]/front_dep:latest
+    image: docker.io/quan109/front_dep:latest
     container_name: front-app
     ports:
       - "80:80"     # Cổng cho React Web (Nginx)

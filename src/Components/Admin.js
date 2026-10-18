@@ -255,8 +255,8 @@ const Admin = () => {
               <strong>Nginx Alpine (Port 80)</strong>
             </div>
             <div className="devops_item">
-              <span className="devops_label">Database & API</span>
-              <strong>JSON-Server (Port 2300)</strong>
+              <span className="devops_label">Database & Backend API</span>
+              <strong>MongoDB Atlas Cloud + Express.js (Port 2300)</strong>
             </div>
             <div className="devops_item">
               <span className="devops_label">Quy Trình Tự Động Hóa</span>

@@ -1,0 +1,482 @@
+{
+  "products": [
+    {
+      "name": "Máy Sấy Panasonic 1400W",
+      "price": "800000",
+      "quantity": 11795,
+      "description": "Máy sấy tóc Panasonic công suất 1400W, nhỏ gọn, tiện lợi.",
+      "imageLink": "../images/May Say Panasonic.jpg",
+      "id": "4973"
+    },
+    {
+      "name": "Tivi LG màn hình 4K",
+      "price": 5000000,
+      "quantity": 11795,
+      "description": "Smart Tivi LG 4K, tích hợp AI, chất lượng hình ảnh sắc nét.",
+      "imageLink": "../images/Tivi-LG.jpg",
+      "id": "3fa9"
+    },
+    {
+      "name": "Tivi CASPER Full HD",
+      "price": 4000000,
+      "quantity": 82692,
+      "description": "Tivi Casper Full HD 43 inch, công nghệ âm thanh sống động.",
+      "imageLink": "../images/Tivi-casper.jpg",
+      "id": "2840"
+    },
+    {
+      "name": "Lavabo gốm HIWIN",
+      "price": "700000",
+      "quantity": 73243,
+      "description": "Lavabo phòng tắm Hiwin bằng gốm, bền đẹp, dễ vệ sinh.",
+      "imageLink": "../images/lavabo-phong-tam2.jpg",
+      "id": "c540"
+    },
+    {
+      "name": "Máy Sấy Elmich 1900W",
+      "price": "900000",
+      "quantity": 82692,
+      "description": "Máy sấy tóc Elmich, công suất cao, thiết kế sang trọng.",
+      "imageLink": "../images/maysayElmich.jpg",
+      "id": "53f1"
+    },
+    {
+      "name": "Máy Sấy Philip (Hồng) 2000W",
+      "price": "800000",
+      "quantity": 83108,
+      "description": "Máy sấy tóc Philips, công nghệ bảo vệ tóc, màu hồng đẹp mắt.",
+      "imageLink": "../images/philiphong.jpg",
+      "id": "1e44"
+    },
+    {
+      "name": "Máy lọc không khí DAIKIN",
+      "price": 7500000,
+      "quantity": 83108,
+      "description": "Máy lọc không khí Daikin, khử mùi hiệu quả, bảo vệ sức khỏe.",
+      "imageLink": "../images/May-loc-khong-khi2.jpg",
+      "id": "72a9"
+    },
+    {
+      "name": "Sofa Vải Nhung POKEMON",
+      "price": 3590000,
+      "quantity": 73243,
+      "description": "Sofa vải nhung cao cấp, thiết kế hiện đại, phù hợp mọi không gian.",
+      "imageLink": "../images/Sofa1.jpg",
+      "id": "673a"
+    },
+    {
+      "name": "Lò vi sóng Sharp",
+      "price": 2500000,
+      "quantity": 73243,
+      "description": "Lò vi sóng Sharp, nấu nhanh, tiết kiệm điện, an toàn.",
+      "imageLink": "../images/Lo-vi-song.jpg",
+      "id": "4653"
+    },
+    {
+      "name": "Hộp đựng bàn chải đánh răng MUZAN",
+      "price": "50000",
+      "quantity": 11795,
+      "description": "Stamm",
+      "imageLink": "../images/hop-dung-ban-chai-danh-rang1.jpg",
+      "id": "c924"
+    },
+    {
+      "name": "Hộp đựng bàn chải đánh răng AKAZA",
+      "price": "60000",
+      "quantity": 82692,
+      "description": "Stamm",
+      "imageLink": "../images/hop-dung-ban-chai-danh-rang2.jpg",
+      "id": "80f3"
+    },
+    {
+      "name": "Bồn Tắm DOUMA",
+      "price": "1000000",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/bon-tam1.jpg",
+      "id": "b6f3"
+    },
+    {
+      "name": "Bồn Tắm KUKUSHIBO",
+      "price": "3000000",
+      "quantity": 94811,
+      "description": "Stamm",
+      "imageLink": "../images/bon-tam2.jpg",
+      "id": "a543"
+    },
+    {
+      "name": "Lavabo gốm HUAWEI",
+      "price": "600000",
+      "quantity": 83108,
+      "description": "Stamm",
+      "imageLink": "../images/lavabo-phong-tam1.jpg",
+      "id": "4de1"
+    },
+    {
+      "name": "Lavabo gốm HIWIN",
+      "price": "700000",
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/lavabo-phong-tam2.jpg",
+      "id": "301e"
+    },
+    {
+      "name": "Vòi sen MSI",
+      "price": "650000",
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/voi-sen1.jpg",
+      "id": "c70d"
+    },
+    {
+      "name": "Vòi sen DELL",
+      "price": "500000",
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/voi-sen2.jpg",
+      "id": "9681"
+    },
+    {
+      "name": "Giá treo khăn NARUTO",
+      "price": "200000",
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/gia-treo-khan.jpg",
+      "id": "c00a"
+    },
+    {
+      "name": "Máy Sấy Panasonic 1400W",
+      "price": "800000",
+      "quantity": 11795,
+      "description": "Stamm",
+      "imageLink": "../images/May Say Panasonic.jpg",
+      "id": "ec04"
+    },
+    {
+      "name": "Máy Sấy Elmich 1900W",
+      "price": "900000",
+      "quantity": 82692,
+      "description": "Stamm",
+      "imageLink": "../images/maysayElmich.jpg",
+      "id": "5524"
+    },
+    {
+      "name": "Đèn ngủ MSI",
+      "price": "2000000",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/Den-ngu1.jpg",
+      "id": "2d19"
+    },
+    {
+      "name": "Đèn Ngủ ASUS",
+      "price": "1500000",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/Den-ngu2.jpg",
+      "id": "df12"
+    },
+    {
+      "name": "Tủ đựng áo, quần MAC",
+      "price": "3000000",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/tu-quan-ao2.jpg",
+      "id": "6dde"
+    },
+    {
+      "name": "Bàn ủi HAYATO",
+      "price": "1450000",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/ban-ui1.jpg",
+      "id": "54e8"
+    },
+    {
+      "name": "Bàn ủi SOREVY",
+      "price": "3000000",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/ban-ui2.jpg",
+      "id": "094c"
+    },
+    {
+      "name": "Bàn ủi hơi nước",
+      "price": "3000000",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/ban-ui3.jpg",
+      "id": "51c2"
+    },
+    {
+      "name": "Tủ đựng áo, quần MAXIM",
+      "price": "3000000",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/tu-quan-ao1.jpg",
+      "id": "2d1f"
+    },
+    {
+      "name": "Dao làm bếp MASAMOTO",
+      "price": 150000,
+      "quantity": 11795,
+      "description": "Stamm",
+      "imageLink": "../images/Dao1.jpg",
+      "id": "9dc3"
+    },
+    {
+      "name": "Dao Kyocera",
+      "price": 200000,
+      "quantity": 82692,
+      "description": "Stamm",
+      "imageLink": "../images/Dao2.jpg",
+      "id": "633a"
+    },
+    {
+      "name": "Nồi chiên không dầu Philips",
+      "price": 1500000,
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/noi-chien-ko-dau.jpg",
+      "id": "3ff3"
+    },
+    {
+      "name": "Thớt Gỗ Moriitalia",
+      "price": 412000,
+      "quantity": 94811,
+      "description": "Stamm",
+      "imageLink": "../images/thot1.jpg",
+      "id": "f810"
+    },
+    {
+      "name": "Thớt gỗ Vietnamese",
+      "price": 412000,
+      "quantity": 83108,
+      "description": "Stamm",
+      "imageLink": "../images/thot2.jpg",
+      "id": "c7cf"
+    },
+    {
+      "name": "Nồi chiên không dầu HDM",
+      "price": 1400000,
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/noi-chien-khong-dau2.jpg",
+      "id": "4507"
+    },
+    {
+      "name": "Lò vi sóng Sharp",
+      "price": 412000,
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/Lo-vi-song.jpg",
+      "id": "d876"
+    },
+    {
+      "name": "Lò vi sóng Galanz",
+      "price": 412000,
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/Lo-vi-song2.jpg",
+      "id": "b039"
+    },
+    {
+      "name": "Kéo làm bếp",
+      "price": 50000,
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/Keo-lam-bep.jpg",
+      "id": "5d4f"
+    },
+    {
+      "name": "Tivi LG màn hình 4K",
+      "price": 5000000,
+      "quantity": 11795,
+      "description": "Stamm",
+      "imageLink": "../images/Tivi-LG.jpg",
+      "id": "0fa5"
+    },
+    {
+      "name": "Tivi CASPER Full HD",
+      "price": 4000000,
+      "quantity": 82692,
+      "description": "Stamm",
+      "imageLink": "../images/Tivi-casper.jpg",
+      "id": "2a9a"
+    },
+    {
+      "name": "Tivi SAMSUNG",
+      "price": 4999000,
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/Tivi-Samsung.jpg",
+      "id": "2ae7"
+    },
+    {
+      "name": "Máy lọc không khí PANASONIC",
+      "price": 8000000,
+      "quantity": 94811,
+      "description": "Stamm",
+      "imageLink": "../images/May-loc-khong-khi1.jpg",
+      "id": "8cb2"
+    },
+    {
+      "name": "Máy lọc không khí DAIKIN",
+      "price": 7500000,
+      "quantity": 83108,
+      "description": "Stamm",
+      "imageLink": "../images/May-loc-khong-khi2.jpg",
+      "id": "38c3"
+    },
+    {
+      "name": "Máy lọc không khí LG",
+      "price": 6500000,
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/May-loc-khong-khi3.jpg",
+      "id": "fbe9"
+    },
+    {
+      "name": "Sofa Vải Nhung POKEMON",
+      "price": 3590000,
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/Sofa1.jpg",
+      "id": "42b2"
+    },
+    {
+      "name": "Sofa Cao Cấp PIKACHU",
+      "price": 3350000,
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/Sofa2.jpg",
+      "id": "954b"
+    },
+    {
+      "name": "Sofa Da Bò FREE FIRE",
+      "price": 4350000,
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/Sofa3.jpg",
+      "id": "f9f3"
+    },
+    {
+      "name": "Máy lọc nước KANGAROO",
+      "price": "2.00",
+      "quantity": 11795,
+      "description": "Stamm",
+      "imageLink": "../images/may-loc-nuoc1.jpg",
+      "id": "72d3"
+    },
+    {
+      "name": "Máy lọc nước KAROFI",
+      "price": "14.00",
+      "quantity": 82692,
+      "description": "Stamm",
+      "imageLink": "../images/may-loc-nuoc2.jpg",
+      "id": "a134"
+    },
+    {
+      "name": "Robot hút bụi KELLY",
+      "price": "7.70",
+      "quantity": 65481,
+      "description": "Stamm",
+      "imageLink": "../images/robot-hut-bui1.jpg",
+      "id": "762a"
+    },
+    {
+      "name": "Robot hút bụi MAXIM",
+      "price": "4.03",
+      "quantity": 94811,
+      "description": "Stamm",
+      "imageLink": "../images/robot-hut-bui2.jpg",
+      "id": "3beb"
+    },
+    {
+      "name": "Bộ chén đĩa cao cấp",
+      "price": "1.00",
+      "quantity": 83108,
+      "description": "Stamm",
+      "imageLink": "../images/bo-chen-dia1.jpg",
+      "id": "3f82"
+    },
+    {
+      "name": "Bộ chén đĩa MOCO",
+      "price": "1.90",
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/bo-chen-dia2.jpg",
+      "id": "286b"
+    },
+    {
+      "name": "Ấm siêu tốc MUZAN",
+      "price": "1.00",
+      "quantity": 83108,
+      "description": "Stamm",
+      "imageLink": "../images/am-sieu-toc1.jpg",
+      "id": "ae42"
+    },
+    {
+      "name": "Ấm siêu tốc AKAZA",
+      "price": "1.90",
+      "quantity": 73243,
+      "description": "Stamm",
+      "imageLink": "../images/am-sieu-toc2.jpg",
+      "id": "2476"
+    },
+    {
+      "id": "d8e6",
+      "name": "Quânqqqqq",
+      "price": "100000",
+      "quantity": "1",
+      "description": "Đẹp trai",
+      "imageLink": "https://tiki.vn/blog/wp-content/uploads/2023/01/Y7deW5ZtpOonbiD_XawHLHdkjKYKHvWxvxNZzKdXXn0L8InieLIH_-U5m0u-RUlFtXKp0Ty91Itj4Oxwn_tjKg_UZo3lxFSrOH_DHIbpKP1LDn80z6BbOxj4d8bmymdy8PWFGjLkTpCdoz-3X-KY7IedQ_dxWJlHSIBWwCYhgM02FvUfVUgLKOQxrQWgjw.jpg"
+    },
+    {
+      "id": "2298",
+      "name": "Bao",
+      "price": "1",
+      "quantity": "1",
+      "description": "Đẹp trai",
+      "imageLink": "https://tiki.vn/blog/wp-content/uploads/2023/01/Y7deW5ZtpOonbiD_XawHLHdkjKYKHvWxvxNZzKdXXn0L8InieLIH_-U5m0u-RUlFtXKp0Ty91Itj4Oxwn_tjKg_UZo3lxFSrOH_DHIbpKP1LDn80z6BbOxj4d8bmymdy8PWFGjLkTpCdoz-3X-KY7IedQ_dxWJlHSIBWwCYhgM02FvUfVUgLKOQxrQWgjw.jpg"
+    },
+    {
+      "id": "85ed",
+      "name": "Thế Nhân",
+      "price": "1",
+      "quantity": "1",
+      "description": "Xấu",
+      "imageLink": "https://tiki.vn/blog/wp-content/uploads/2023/01/Y7deW5ZtpOonbiD_XawHLHdkjKYKHvWxvxNZzKdXXn0L8InieLIH_-U5m0u-RUlFtXKp0Ty91Itj4Oxwn_tjKg_UZo3lxFSrOH_DHIbpKP1LDn80z6BbOxj4d8bmymdy8PWFGjLkTpCdoz-3X-KY7IedQ_dxWJlHSIBWwCYhgM02FvUfVUgLKOQxrQWgjw.jpg"
+    }
+  ],
+  "user": [
+    {
+      "id": "b8f3",
+      "fullName": "Huynh Phuoc Quan",
+      "email": "quan105633@donga.edu.vn",
+      "phone": "098765321",
+      "username": "quan123",
+      "password": "quan12345",
+      "confirmPassword": "quan12345",
+      "dob": "1111-11-11",
+      "gender": "Nam",
+      "address": "11 đặng thái thân"
+    },
+    {
+      "id": "32fd",
+      "username": "admin",
+      "password": "admin123"
+    },
+    {
+      "id": "d71e",
+      "fullName": "Cao dinh bao",
+      "email": "bao105833@donga.edu.vn",
+      "phone": "0347934359",
+      "username": "bao123",
+      "password": "bao12345",
+      "dob": "1111-11-11",
+      "gender": "Nam",
+      "address": "11 đặng thái thân, Đà Nẳng"
+    }
+  ]
+}

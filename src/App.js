@@ -76,25 +76,35 @@ function App() {
   // Navbar cho admin
 const AdminNavbar = () => (
   <nav className="nav">
-    <div className="nav_logo">Admin Panel</div>
+    <Link to="/" className="nav_brand">
+      <div className="brand_icon">
+        <i className="bi bi-shield-lock-fill"></i>
+      </div>
+      <div className="brand_text">
+        <span className="brand_title">Home<span className="brand_accent">ADMIN</span></span>
+        <span className="brand_subtitle">Bảng Quản Trị</span>
+      </div>
+    </Link>
     <div className="nav_links">
       <Link to="/" className="nav_link">
-        Trang Chủ
+        <i className="bi bi-house-door"></i> Trang Chủ
       </Link>
-      <Link to="/cart" className="nav_cart">
-        Giỏ hàng ({cartItems.length})
-       </Link>
-       <Link to="/admin" className="nav_link">
-        Admin
+      <Link to="/admin" className="nav_link">
+        <i className="bi bi-speedometer2"></i> Tổng Quan
       </Link>
       <Link to="/productmanagement" className="nav_link">
-        Quản Lý Sản Phẩm
+        <i className="bi bi-box-seam"></i> Quản Lý Sản Phẩm
       </Link>
       <Link to="/usermanagement" className="nav_link">
-        Quản Lý Người Dùng
+        <i className="bi bi-people"></i> Quản Lý Người Dùng
       </Link>
-      <button to="/login" onClick={handleLogout} className="nav_link">
-        Đăng xuất
+      <Link to="/cart" className="nav_cart">
+        <i className="bi bi-cart3"></i>
+        <span>Giỏ hàng</span>
+        <span className="cart_badge">{cartItems.length}</span>
+      </Link>
+      <button onClick={handleLogout} className="nav_link nav_logout_btn">
+        <i className="bi bi-box-arrow-right"></i> Đăng xuất
       </button>
     </div>
   </nav>
@@ -103,59 +113,69 @@ const AdminNavbar = () => (
 // Navbar cho người dùng thường
 const UserNavbar = () => (
   <nav className="nav">
-          <div className="nav_logo">
-          <img src="/images/logo.png" alt="Logo" className="nav_logo-image" />
-          </div>
-          <div className="nav_links">
-            <Link to="/" className="nav_link">
-              Trang Chủ
-            </Link>
-            <Link to="/contact" className="nav_link">
-              Giới thiệu
-            </Link>
-            <Link to="/service" className="nav_link">
-              Chính sách
-            </Link>
-            <div className="dropdown">
-              <span className="nav_link dropdown_toggle">Sản Phẩm</span>
-              <div className="dropdown_content">
-                <Link to="/member1" className="dropdown_item">
-                  Phòng Tắm
-                </Link>
-                <Link to="/member2" className="dropdown_item">
-                  Phòng Ngủ
-                </Link>
-                <Link to="/member3" className="dropdown_item">
-                  Phòng Bếp
-                </Link>
-                <Link to="/member4" className="dropdown_item">
-                  Phòng Khách 
-                </Link>
-                <Link to="/member5" className="dropdown_item">
-                  Sản Phẩm khác
-                </Link>
-              </div>
-            </div>
-            <Link to="/support" className="nav_link">
-              Hỗ trợ
-            </Link>
-            <Link to="/cart" className="nav_cart">
-              Giỏ hàng ({cartItems.length})
-            </Link>
-            <Link to="/profile" className="nav_link">
-              Tài khoản
-            </Link>
-            {isLoggedIn ? (
-              <button onClick={handleLogout} className="nav_link">
-                Đăng xuất
-              </button>
-            ) : (
-              <Link to="/login" className="nav_link">
-                Đăng nhập/Đăng ký
-              </Link>
-            )}
-          </div>
-        </nav>
+    <Link to="/" className="nav_brand">
+      <div className="brand_icon">
+        <i className="bi bi-shop-window"></i>
+      </div>
+      <div className="brand_text">
+        <span className="brand_title">Home<span className="brand_accent">SHOP</span></span>
+        <span className="brand_subtitle">Gia Dụng & Nội Thất</span>
+      </div>
+    </Link>
+    <div className="nav_links">
+      <Link to="/" className="nav_link">
+        <i className="bi bi-house-door"></i> Trang Chủ
+      </Link>
+      <Link to="/contact" className="nav_link">
+        <i className="bi bi-info-circle"></i> Giới thiệu
+      </Link>
+      <Link to="/service" className="nav_link">
+        <i className="bi bi-shield-check"></i> Chính sách
+      </Link>
+      <div className="dropdown">
+        <span className="nav_link dropdown_toggle">
+          <i className="bi bi-grid"></i> Sản Phẩm <i className="bi bi-chevron-down ms-1"></i>
+        </span>
+        <div className="dropdown_content">
+          <Link to="/member1" className="dropdown_item">
+            <i className="bi bi-droplet me-2"></i> Phòng Tắm
+          </Link>
+          <Link to="/member2" className="dropdown_item">
+            <i className="bi bi-moon-stars me-2"></i> Phòng Ngủ
+          </Link>
+          <Link to="/member3" className="dropdown_item">
+            <i className="bi bi-cup-hot me-2"></i> Phòng Bếp
+          </Link>
+          <Link to="/member4" className="dropdown_item">
+            <i className="bi bi-tv me-2"></i> Phòng Khách 
+          </Link>
+          <Link to="/member5" className="dropdown_item">
+            <i className="bi bi-stars me-2"></i> Sản Phẩm Khác
+          </Link>
+        </div>
+      </div>
+      <Link to="/support" className="nav_link">
+        <i className="bi bi-headset"></i> Hỗ trợ
+      </Link>
+      <Link to="/cart" className="nav_cart">
+        <i className="bi bi-cart3"></i>
+        <span>Giỏ hàng</span>
+        <span className="cart_badge">{cartItems.length}</span>
+      </Link>
+      <Link to="/profile" className="nav_link">
+        <i className="bi bi-person-circle"></i> Tài khoản
+      </Link>
+      {isLoggedIn ? (
+        <button onClick={handleLogout} className="nav_link nav_logout_btn">
+          <i className="bi bi-box-arrow-right"></i> Đăng xuất
+        </button>
+      ) : (
+        <Link to="/login" className="nav_link nav_login_btn">
+          <i className="bi bi-person-lock"></i> Đăng nhập
+        </Link>
+      )}
+    </div>
+  </nav>
 );
 
 

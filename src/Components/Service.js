@@ -1,90 +1,118 @@
 import React from 'react';
+import Footer from './Footer';
 import "../App.css";
 
 const Service = () => {
-    return (
-        <div>
-            <div className="service-banner">
-                <div id="serviceCarousel" className="carousel slide" data-bs-ride="carousel">
-                    <div className="carousel-indicators">
-                        <button type="button" data-bs-target="#serviceCarousel" data-bs-slide-to="0" className="active"></button>
-                        <button type="button" data-bs-target="#serviceCarousel" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#serviceCarousel" data-bs-slide-to="2"></button>
-                    </div>
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <img src="../images/bannerservice.png" className="d-block w-100" alt="Banner 1"/>
-                            <div className="carousel-caption">
-                                <div className="search-container">
-                                    <input type="text" className="service-search" placeholder="Tìm kiếm..."/>
-                                    <i className="fas fa-search search-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="carousel-item">
-                            <img src="../images/bannerservice2.jpg" className="d-block w-100" alt="Banner 2"/>
-                        </div>
-                        <div className="carousel-item">
-                            <img src="../images/bannerservice3.jpg" className="d-block w-100" alt="Banner 3"/>
-                        </div>
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#serviceCarousel" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon"></span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#serviceCarousel" data-bs-slide="next">
-                        <span className="carousel-control-next-icon"></span>
-                    </button>
-                </div>
-            </div>
-            <div className="service-container">
-                <div className="service-sidebar">
-                    <ul>
-                        <li>Thể loại</li>
-                        <li>Người dùng mới</li>
-                        <li>HomeMall</li>
-                        <li>Thanh toán</li>
-                        <li>Các chủ đề khác</li>
-                        <li>Sản phẩm trên Home Shop</li>
-                        <li>Quyền riêng tư dữ liệu</li>
-                        <li>Phiếu giảm giá & Khuyến mãi</li>
-                        <li>Tài khoản của tôi</li>
-                        <li>Sản phẩm lựa chọn</li>
-                        <li>Hủy/Trả hàng & Hoàn tiền</li>
-                        <li>Vận chuyển & Giao hàng</li>
-                    </ul>
-                </div>
-                <div className="service-main-content">
-                    <h1 className="service-title">Sản phẩm trên HomeShop</h1>
-                    <div className="service-buttons">
-                        <button>Thông tin sản phẩm</button>
-                        <button>Sản phẩm nước ngoài</button>
-                        <button>Thuế GTGT</button>
-                        <button>Bảo hành</button>
-                        <button>Báo cáo sản phẩm giả mạo/bị cấm</button>
-                        <button>eVoucher & MiniApp</button>
-                    </div>
-                    <ul className="service-list">
-                        <li>Kênh mua sắm đồ gia dụng HomeShop</li>
-                        <li>Những câu hỏi thường gặp về mua hàng</li>
-                        <li>Hoàn tiền lên đến 500K nếu nơi khác rẻ hơn</li>
-                        <li>Một số thông tin chung khi khách đặt hàng ở HomeShop</li>
-                        <li>Cách thêm thông tin hóa đơn VAT</li>
-                        <li>Tôi có thể tìm thấy sản phẩm mới trên HomeShop không?</li>
-                        <li>Làm sao để biết được sản phẩm đó có phải là hàng giả không?</li>
-                        <li>Điều khoản và điều kiện đảm bảo tính xác thực 100%</li>
-                        <li>Đảm bảo 100% hàng chính hãng - Điểm đến mua sắm đáng tin cậy của bạn</li>
-                        <li>Những câu hỏi thường gặp về chương trình 'Đảm bảo giá tốt nhất'</li>
-                    </ul>
-                    <div className="service-pagination">
-                        <button>1</button>
-                        <button>2</button>
-                        <button>3</button>
-                        <button>4</button>
-                    </div>
-                </div>
-            </div>
+
+  const faqs = [
+    {
+      q: "Làm thế nào để kích hoạt bảo hành điện tử?",
+      a: "Tất cả sản phẩm mua tại HomeSHOP đều được tự động kích hoạt bảo hành qua số điện thoại đặt hàng của quý khách ngay khi đơn hàng hoàn tất giao nhận."
+    },
+    {
+      q: "Quy trình đổi trả hàng trong 30 ngày diễn ra như thế nào?",
+      a: "Nếu sản phẩm gặp lỗi kỹ thuật từ nhà sản xuất trong vòng 30 ngày, quý khách chỉ cần liên hệ hotline 1900 6868, nhân viên kỹ thuật sẽ đến tận nhà kiểm tra và đổi sản phẩm mới 100% hoàn toàn miễn phí."
+    },
+    {
+      q: "Tôi có được kiểm tra hàng trước khi thanh toán không?",
+      a: "Chắc chắn có! HomeSHOP luôn áp dụng chính sách 'Đồng kiểm khi nhận hàng'. Quý khách được mở hộp kiểm tra ngoại quan sản phẩm trước khi thanh toán tiền cho nhân viên giao hàng."
+    },
+    {
+      q: "Thời gian giao hàng mất bao lâu?",
+      a: "Nội thành các thành phố lớn (Hà Nội, TP.HCM, Đà Nẵng): Giao nhanh từ 2 - 4 giờ hoặc trong ngày. Các tỉnh thành khác: Giao từ 1 - 3 ngày làm việc qua các đối tác vận chuyển uy tín."
+    }
+  ];
+
+  return (
+    <div className="policy_page_container">
+      {/* Header Section */}
+      <section className="policy_hero_section">
+        <div className="policy_hero_content">
+          <span className="section_badge">TRUNG TÂM MINH BẠCH</span>
+          <h1>Chính Sách & Điều Khoản Dịch Vụ</h1>
+          <p className="policy_hero_sub">
+            Cam kết quyền lợi tối đa cho khách hàng với quy trình bảo hành, đổi trả và giao nhận rõ ràng, nhanh chóng và tận tâm.
+          </p>
         </div>
-    );
+      </section>
+
+      {/* 4 Pillars of Policy */}
+      <section className="policy_pillars_section">
+        <div className="policy_grid">
+          <div className="policy_card">
+            <div className="policy_icon_wrap icon_blue">
+              <i className="bi bi-shield-check"></i>
+            </div>
+            <h3>Bảo Hành Chính Hãng</h3>
+            <ul>
+              <li>Bảo hành 12 - 24 tháng theo tiêu chuẩn của nhà sản xuất.</li>
+              <li>Bảo hành điện tử thông minh qua SĐT, không cần giữ giấy tờ.</li>
+              <li>Hỗ trợ kỹ thuật viên kiểm tra và sửa chữa tận nhà.</li>
+            </ul>
+          </div>
+
+          <div className="policy_card">
+            <div className="policy_icon_wrap icon_amber">
+              <i className="bi bi-arrow-repeat"></i>
+            </div>
+            <h3>Đổi Trả 30 Ngày</h3>
+            <ul>
+              <li>Đổi mới 1 - 1 miễn phí trong 30 ngày nếu phát sinh lỗi kỹ thuật.</li>
+              <li>Hoàn tiền 100% nếu phát hiện hàng không đúng mô tả.</li>
+              <li>Thủ tục tinh gọn, xử lý nhanh trong 24 giờ làm việc.</li>
+            </ul>
+          </div>
+
+          <div className="policy_card">
+            <div className="policy_icon_wrap icon_green">
+              <i className="bi bi-truck"></i>
+            </div>
+            <h3>Giao Nhận Toàn Quốc</h3>
+            <ul>
+              <li>Miễn phí vận chuyển cho tất cả đơn hàng từ 500.000đ.</li>
+              <li>Giao hàng hỏa tốc trong 2 giờ tại khu vực nội thành.</li>
+              <li>Cho phép mở hộp đồng kiểm tra trước khi thanh toán.</li>
+            </ul>
+          </div>
+
+          <div className="policy_card">
+            <div className="policy_icon_wrap icon_purple">
+              <i className="bi bi-lock-fill"></i>
+            </div>
+            <h3>Bảo Mật & Thanh Toán</h3>
+            <ul>
+              <li>Mã hóa dữ liệu chuẩn SSL 256-bit an toàn tuyệt đối.</li>
+              <li>Đa dạng hình thức: Tiền mặt (COD), Thẻ ATM/Visa, Ví điện tử.</li>
+              <li>Cam kết bảo mật 100% thông tin cá nhân của khách hàng.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Accordion Section */}
+      <section className="policy_faq_section">
+        <div className="faq_container">
+          <div className="text-center mb-4">
+            <span className="section_badge">GIẢI ĐÁP NHANH</span>
+            <h2>Câu Hỏi Thường Gặp Về Chính Sách</h2>
+          </div>
+          <div className="faq_list">
+            {faqs.map((item, index) => (
+              <div key={index} className="faq_item_card">
+                <div className="faq_question">
+                  <i className="bi bi-question-circle-fill text-primary me-2"></i>
+                  <h5>{item.q}</h5>
+                </div>
+                <p className="faq_answer">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
 };
 
 export default Service;

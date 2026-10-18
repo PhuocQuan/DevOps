@@ -1,9 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Footer from "./Footer";
 
 function Home({ addToCart }) {
-  const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -99,13 +98,13 @@ function Home({ addToCart }) {
           </div>
           <div className="carousel-inner">
             <div className="carousel-item active">
-              <img src="../images/bannerhome.jpg" className="d-block w-100" alt="Banner 1"/>
+              <img src="/images/bannerhome.jpg" className="d-block w-100" alt="Banner 1"/>
             </div>
             <div className="carousel-item">
-              <img src="../images/bannerhome2.jpg" className="d-block w-100" alt="Banner 2"/>
+              <img src="/images/bannerhome2.jpg" className="d-block w-100" alt="Banner 2"/>
             </div>
             <div className="carousel-item">
-              <img src="../images/bannerhome3.jpg" className="d-block w-100" alt="Banner 3"/>
+              <img src="/images/bannerhome3.jpg" className="d-block w-100" alt="Banner 3"/>
             </div>
           </div>
           <button className="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">

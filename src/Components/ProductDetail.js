@@ -48,11 +48,23 @@ function ProductDetail({ addToCart }) {
       }
     };
 
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    if (!loggedInStatus) {
+      navigate("/login");
+      return;
+    }
+
     fetchData();
     window.scrollTo(0, 0);
-  }, [productId]);
+  }, [productId, navigate]);
 
   const handleAddToCart = () => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    if (!loggedInStatus) {
+      navigate("/login");
+      return;
+    }
+
     addToCart(product);
     // Hiển thị thông báo thành công
     const notification = document.createElement('div');

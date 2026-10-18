@@ -756,6 +756,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .main_product .product_link:hover {

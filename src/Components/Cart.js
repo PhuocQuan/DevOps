@@ -11,6 +11,10 @@ function Cart({ cartItems = [], setCartItems }) {
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedInStatus);
+    if (!loggedInStatus) {
+      navigate("/login");
+      return;
+    }
 
     // Fetch products from API
     fetch("/api/products")
@@ -21,7 +25,7 @@ function Cart({ cartItems = [], setCartItems }) {
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
-  }, []);
+  }, [navigate]);
 
   const handleCheckout = () => {
     if (!isLoggedIn) {

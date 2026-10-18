@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Home from "./Components/Home";
 import Login from "./Components/Login";
@@ -98,7 +98,7 @@ const AdminNavbar = () => (
       <Link to="/usermanagement" className="nav_link">
         <i className="bi bi-people"></i> Quản Lý Người Dùng
       </Link>
-      <Link to="/cart" className="nav_cart">
+      <Link to={isLoggedIn ? "/cart" : "/login"} className="nav_cart">
         <i className="bi bi-cart3"></i>
         <span>Giỏ hàng</span>
         <span className="cart_badge">{cartItems.length}</span>
@@ -157,12 +157,12 @@ const UserNavbar = () => (
       <Link to="/support" className="nav_link">
         <i className="bi bi-headset"></i> Hỗ trợ
       </Link>
-      <Link to="/cart" className="nav_cart">
+      <Link to={isLoggedIn ? "/cart" : "/login"} className="nav_cart">
         <i className="bi bi-cart3"></i>
         <span>Giỏ hàng</span>
         <span className="cart_badge">{cartItems.length}</span>
       </Link>
-      <Link to="/profile" className="nav_link">
+      <Link to={isLoggedIn ? "/profile" : "/login"} className="nav_link">
         <i className="bi bi-person-circle"></i> Tài khoản
       </Link>
       {isLoggedIn ? (
@@ -178,7 +178,6 @@ const UserNavbar = () => (
   </nav>
 );
 
-
   return (
     <Router>
       <ScrollToTop />
@@ -190,7 +189,7 @@ const UserNavbar = () => (
           <Route path="/service" element={<Service />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/support" element={<Support />} />
-          <Route path="/cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems} removeFromCart={removeFromCart} />} />
+          <Route path="/cart" element={isLoggedIn ? <Cart cartItems={cartItems} setCartItems={setCartItems} removeFromCart={removeFromCart} /> : <Navigate to="/login" replace />} />
           <Route path="/checkout" element={<Checkout clearCart={clearCart} />} />
           <Route path="/checkout-form" element={<CheckoutForm clearCart={clearCart} userData={user}/>} />
           <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} setUser={setUser} />} />
@@ -199,8 +198,8 @@ const UserNavbar = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="/usermanagement" element={<UserManagemant />} />
           <Route path="/productmanagement" element={<ProductManagement />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/product/:productId" element={<ProductDetail addToCart={addToCart} />} />
+          <Route path="/profile" element={isLoggedIn ? <UserProfile /> : <Navigate to="/login" replace />} />
+          <Route path="/product/:productId" element={isLoggedIn ? <ProductDetail addToCart={addToCart} /> : <Navigate to="/login" replace />} />
           <Route path="/member1" element={<Member1 addToCart={addToCart} />} />
           <Route path="/member2" element={<Member2 addToCart={addToCart} />} />
           <Route path="/member3" element={<Member3 addToCart={addToCart} />} />

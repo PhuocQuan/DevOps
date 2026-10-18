@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaPhone, FaUserCircle, FaBirthdayCake, FaVenusMars, FaMapMarkerAlt } from 'react-icons/fa';
 
 function UserProfile() {
+  const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,8 +11,13 @@ function UserProfile() {
   const [editedProfile, setEditedProfile] = useState(null);
 
   useEffect(() => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    if (!loggedInStatus) {
+      navigate("/login");
+      return;
+    }
     fetchUserProfile();
-  }, []);
+  }, [navigate]);
 
   const fetchUserProfile = async () => {
     try {

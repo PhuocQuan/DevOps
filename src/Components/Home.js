@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Footer from "./Footer";
 
 function Home({ addToCart }) {
+  const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -63,15 +64,26 @@ function Home({ addToCart }) {
 
   // Handle adding to cart
   const handleAddToCart = (product) => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    if (!loggedInStatus) {
+      navigate("/login");
+      return;
+    }
+
     addToCart(product);
     setAlertMessage(`${product.name} đã được thêm vào giỏ hàng!`);
     setShowAlert(true);
-  
-    // Thêm sản phẩm vào đầu danh sách (cập nhật filteredProducts)
-    // setFilteredProducts(prevProducts => [product, ...prevProducts]);
-  
-    // Tự động ẩn thông báo sau 3 giây
     setTimeout(() => setShowAlert(false), 3000);
+  };
+
+  // Handle viewing product details
+  const handleViewDetail = (productName) => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    if (!loggedInStatus) {
+      navigate("/login");
+    } else {
+      navigate(`/product/${productName}`);
+    }
   };
 
   // Get products for the current page
@@ -266,9 +278,13 @@ function Home({ addToCart }) {
                   >
                     <i className="bi bi-cart-plus me-1"></i> Thêm giỏ hàng
                   </button>
-                  <Link to={`/product/${product.name}`} className="product_link">
+                  <button
+                    type="button"
+                    onClick={() => handleViewDetail(product.name)}
+                    className="product_link"
+                  >
                     <i className="bi bi-info-circle me-1"></i> Chi tiết
-                  </Link>
+                  </button>
                 </div>
               </div>
               {hoveredProduct === product && (

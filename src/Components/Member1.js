@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Footer from "./Footer";
 
 function Member1({ addToCart }) {
+  const navigate = useNavigate();
   const products = [
     {
       name: "Hộp đựng bàn chải đánh răng MUZAN",
@@ -108,10 +109,25 @@ function Member1({ addToCart }) {
   };
 
   const handleAddToCart = (product) => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    if (!loggedInStatus) {
+      navigate("/login");
+      return;
+    }
+
     addToCart(product);
     setAlertMessage(`${product.name} đã được thêm vào giỏ hàng!`);
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 3000);
+  };
+
+  const handleViewDetail = (productName) => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    if (!loggedInStatus) {
+      navigate("/login");
+    } else {
+      navigate(`/product/${productName}`);
+    }
   };
 
   return (
@@ -238,9 +254,13 @@ function Member1({ addToCart }) {
                   >
                     <i className="bi bi-cart-plus me-1"></i> Thêm giỏ hàng
                   </button>
-                  <Link to={`/product/${product.name}`} className="product_link">
+                  <button
+                    type="button"
+                    onClick={() => handleViewDetail(product.name)}
+                    className="product_link"
+                  >
                     <i className="bi bi-info-circle me-1"></i> Chi tiết
-                  </Link>
+                  </button>
                 </div>
               </div>
               {hoveredProduct === product && (

@@ -313,6 +313,7 @@ const getOrderById = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     const {
+      customerUsername,
       customerName,
       customerEmail,
       customerPhone,
@@ -329,6 +330,7 @@ const createOrder = async (req, res) => {
     }
 
     const newOrder = new Order({
+      customerUsername: customerUsername || "",
       customerName,
       customerEmail: customerEmail || "khachhang@homeshop.vn",
       customerPhone,

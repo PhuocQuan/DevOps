@@ -88,9 +88,13 @@ const CheckoutForm = ({ clearCart, userData, cartItems = [] }) => {
           ? totalAmount
           : itemsPayload.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
 
+      const storedUser = JSON.parse(localStorage.getItem("userData") || "{}");
+      const activeUser = userData || storedUser;
+
       const orderPayload = {
+        customerUsername: activeUser?.username || "",
         customerName: formData.fullName.trim(),
-        customerEmail: formData.email.trim() || "khachhang@homeshop.vn",
+        customerEmail: formData.email.trim() || activeUser?.email || "khachhang@homeshop.vn",
         customerPhone: formData.phone.trim(),
         shippingAddress: formData.address.trim(),
         notes: formData.note.trim(),

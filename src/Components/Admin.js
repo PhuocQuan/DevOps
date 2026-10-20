@@ -62,9 +62,11 @@ const Admin = () => {
 
   const totalStock = products.reduce((acc, curr) => acc + (Number(curr.quantity) || 0), 0);
   const pendingOrders = orders.filter((o) => o.status === "Chờ xác nhận");
-  const totalRevenue = orders
-    .filter((o) => o.status !== "Đã hủy")
-    .reduce((acc, curr) => acc + (Number(curr.totalAmount) || 0), 0);
+  const deliveredOrders = orders.filter((o) => o.status === "Đã nhận hàng");
+  const totalRevenue = deliveredOrders.reduce(
+    (acc, curr) => acc + (Number(curr.totalAmount) || 0),
+    0
+  );
 
   return (
     <div className="admin_dashboard_wrapper">
@@ -137,7 +139,7 @@ const Admin = () => {
               <i className="bi bi-cash-coin"></i>
             </div>
             <div className="metric_info">
-              <span className="metric_title">Doanh Thu Đơn Hàng</span>
+              <span className="metric_title">Doanh Thu Thực Tế</span>
               <h3 className="text-success">
                 {loading
                   ? "..."
@@ -148,7 +150,7 @@ const Admin = () => {
                     }).format(totalRevenue)}
               </h3>
               <p className="metric_sub">
-                <i className="bi bi-check-circle me-1"></i> Dữ liệu bán hàng thực tế
+                <i className="bi bi-check-circle me-1"></i> Tính từ <strong>{deliveredOrders.length}</strong> đơn đã nhận hàng
               </p>
             </div>
           </div>

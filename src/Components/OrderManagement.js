@@ -131,9 +131,9 @@ const OrderManagement = () => {
   const deliveredCount = orders.filter((o) => o.status === "Đã nhận hàng").length;
   const cancelledCount = orders.filter((o) => o.status === "Đã hủy").length;
 
-  // Tính tổng doanh thu các đơn không bị hủy
+  // Tính tổng doanh thu: CHỈ TÍNH KHI ĐÃ GIAO / NHẬN HÀNG THÀNH CÔNG!
   const totalRevenue = orders
-    .filter((o) => o.status !== "Đã hủy")
+    .filter((o) => o.status === "Đã nhận hàng")
     .reduce((acc, curr) => acc + (Number(curr.totalAmount) || 0), 0);
 
   // Helper render badge trạng thái
@@ -254,7 +254,7 @@ const OrderManagement = () => {
               <i className="bi bi-cash-coin"></i>
             </div>
             <div className="metric_info">
-              <span className="metric_title">Tổng Doanh Thu</span>
+              <span className="metric_title">Doanh Thu Thực Tế</span>
               <h3 className="text-success">
                 {loading
                   ? "..."
@@ -265,7 +265,7 @@ const OrderManagement = () => {
                     }).format(totalRevenue)}
               </h3>
               <p className="metric_sub">
-                <i className="bi bi-check2-all me-1"></i> Đã hoàn thành & đang xử lý
+                <i className="bi bi-check2-all me-1"></i> Tính từ <strong>{deliveredCount}</strong> đơn giao thành công
               </p>
             </div>
           </div>

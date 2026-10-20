@@ -68,6 +68,18 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: "2 - 4 ngày làm việc",
     },
+    deliveryDate: {
+      type: String,
+      default: "",
+    },
+    deliveryTime: {
+      type: String,
+      default: "",
+    },
+    deliveryNote: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,

@@ -3,6 +3,13 @@ import { useNavigate, Link } from "react-router-dom";
 import Footer from "./Footer";
 import "../App.css";
 
+const formatDisplayDate = (dateStr) => {
+  if (!dateStr) return "";
+  const parts = dateStr.split("-");
+  if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  return dateStr;
+};
+
 function UserProfile() {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
@@ -399,16 +406,59 @@ function UserProfile() {
                       )}
 
                       {/* Delivery Info Notification */}
-                      <div className="order_shipping_notice">
-                        <i className="bi bi-clock-history text-primary me-2 fs-5"></i>
-                        <div>
-                          <strong>Dự kiến nhận hàng: </strong>
-                          <span className="text-primary fw-bold">{order.estimatedDelivery || "2 - 4 ngày làm việc"}</span>
-                          <div className="text-muted small mt-1">
-                            Giao tới: <strong>{order.shippingAddress}</strong> (SĐT: {order.customerPhone})
+                      {order.deliveryDate || order.deliveryTime ? (
+                        <div className="order_appointment_card">
+                          <div className="appointment_header">
+                            <span className="appointment_badge">
+                              <i className="bi bi-calendar-check-fill me-1"></i> ADMIN ĐÃ ẤN ĐỊNH LỊCH GIAO HÀNG
+                            </span>
+                            <span className="appointment_status_pill">
+                              {order.status === "Đang giao hàng" ? "Shipper đang giao hàng" : "Đã lên lịch giao chuẩn xác"}
+                            </span>
+                          </div>
+                          <div className="appointment_body">
+                            <div className="appointment_main_time">
+                              <div className="time_block">
+                                <span className="time_label">KHUNG GIỜ GIAO</span>
+                                <span className="time_val">
+                                  <i className="bi bi-alarm-fill me-1 text-danger"></i>
+                                  {order.deliveryTime || "Giờ hành chính"}
+                                </span>
+                              </div>
+                              <div className="divider_v"></div>
+                              <div className="date_block">
+                                <span className="date_label">NGÀY GIAO HÀNG</span>
+                                <span className="date_val">
+                                  <i className="bi bi-calendar-event-fill me-1 text-primary"></i>
+                                  {formatDisplayDate(order.deliveryDate) || order.estimatedDelivery}
+                                </span>
+                              </div>
+                            </div>
+                            {order.deliveryNote && (
+                              <div className="appointment_note">
+                                <i className="bi bi-chat-left-text-fill text-warning me-1"></i>
+                                <span>Lời nhắn shipper: <strong>{order.deliveryNote}</strong></span>
+                              </div>
+                            )}
+                            <div className="appointment_address">
+                              <i className="bi bi-geo-alt-fill text-danger me-1"></i> Giao tới: <strong>{order.shippingAddress}</strong> (SĐT: {order.customerPhone})
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="order_shipping_notice">
+                          <i className={`bi ${isPending ? "bi-hourglass-split text-warning" : "bi-clock-history text-primary"} me-2 fs-5`}></i>
+                          <div>
+                            <strong>{isPending ? "Lịch giao hàng: " : "Dự kiến nhận hàng: "}</strong>
+                            <span className={isPending ? "text-muted" : "text-primary fw-bold"}>
+                              {isPending ? "Đang chờ Admin xác nhận và lên lịch giao cụ thể..." : (order.estimatedDelivery || "2 - 4 ngày làm việc")}
+                            </span>
+                            <div className="text-muted small mt-1">
+                              Giao tới: <strong>{order.shippingAddress}</strong> (SĐT: {order.customerPhone})
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Items List */}
                       <div className="user_order_items_box">

@@ -3,6 +3,31 @@ import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import "../App.css";
 
+const getTodayDate = () => {
+  return new Date().toISOString().split("T")[0];
+};
+
+const getTomorrowDate = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().split("T")[0];
+};
+
+const getAfterTwoDaysDate = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 2);
+  return d.toISOString().split("T")[0];
+};
+
+const formatDisplayDate = (dateStr) => {
+  if (!dateStr) return "";
+  const parts = dateStr.split("-");
+  if (parts.length === 3) {
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  }
+  return dateStr;
+};
+
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,6 +37,15 @@ const OrderManagement = () => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [actionLoading, setActionLoading] = useState(null);
   const [alertMsg, setAlertMsg] = useState("");
+
+  // State cho Modal Xác nhận & Lên lịch giao hàng
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [schedulingOrder, setSchedulingOrder] = useState(null);
+  const [deliveryDate, setDeliveryDate] = useState(getTomorrowDate());
+  const [deliveryTime, setDeliveryTime] = useState("14:00 - 16:30 (Buổi Chiều)");
+  const [customTime, setCustomTime] = useState("");
+  const [deliveryNote, setDeliveryNote] = useState("");
+  const [scheduleLoading, setScheduleLoading] = useState(false);
 
   useEffect(() => {
     fetchOrders();
@@ -38,10 +72,70 @@ const OrderManagement = () => {
 
   const showAlert = (msg, type = "success") => {
     setAlertMsg({ text: msg, type });
-    setTimeout(() => setAlertMsg(""), 4000);
+    setTimeout(() => setAlertMsg(""), 4500);
   };
 
-  // Cập nhật trạng thái đơn hàng (Xác nhận, Giao hàng, Hoàn tất, Hủy)
+  // Mở modal lên lịch giao hàng & xác nhận
+  const openScheduleModal = (order) => {
+    setSchedulingOrder(order);
+    setDeliveryDate(order.deliveryDate || getTomorrowDate());
+    setDeliveryTime(order.deliveryTime || "14:00 - 16:30 (Buổi Chiều)");
+    setCustomTime("");
+    setDeliveryNote(order.deliveryNote || "Shipper gọi trước khi tới 15 phút");
+    setShowScheduleModal(true);
+  };
+
+  // Lưu lịch giao hàng và xác nhận đơn
+  const handleConfirmWithSchedule = async (e) => {
+    if (e) e.preventDefault();
+    if (!schedulingOrder) return;
+
+    try {
+      setScheduleLoading(true);
+      const orderId = schedulingOrder.id || schedulingOrder._id;
+      const finalTime = customTime.trim() ? customTime.trim() : deliveryTime;
+      const formattedDate = formatDisplayDate(deliveryDate);
+      const estimatedDelivery = `${finalTime}, Ngày ${formattedDate}`;
+
+      const payload = {
+        status: "Đã xác nhận",
+        deliveryDate,
+        deliveryTime: finalTime,
+        deliveryNote: deliveryNote.trim(),
+        estimatedDelivery,
+      };
+
+      const res = await fetch(`/api/orders/${orderId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Cập nhật lịch giao hàng thất bại");
+
+      const updated = await res.json();
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId || o._id === orderId ? updated : o))
+      );
+
+      if (selectedOrder && (selectedOrder.id === orderId || selectedOrder._id === orderId)) {
+        setSelectedOrder(updated);
+      }
+
+      setShowScheduleModal(false);
+      showAlert(
+        `Đã xác nhận đơn #${schedulingOrder.orderCode || orderId} và ấn định giờ giao: ${estimatedDelivery}!`,
+        "success"
+      );
+    } catch (err) {
+      console.error(err);
+      showAlert("Lỗi khi xác nhận và lên lịch giao hàng.", "danger");
+    } finally {
+      setScheduleLoading(false);
+    }
+  };
+
+  // Cập nhật trạng thái đơn hàng thông thường
   const handleUpdateStatus = async (orderId, newStatus, newPaymentStatus = null) => {
     try {
       setActionLoading(orderId);
@@ -131,7 +225,7 @@ const OrderManagement = () => {
   const deliveredCount = orders.filter((o) => o.status === "Đã nhận hàng").length;
   const cancelledCount = orders.filter((o) => o.status === "Đã hủy").length;
 
-  // Tính tổng doanh thu: CHỈ TÍNH KHI ĐÃ GIAO / NHẬN HÀNG THÀNH CÔNG!
+  // QUY TẮC CHUẨN: CHỈ TÍNH DOANH THU KHI ĐÃ GIAO HÀNG THÀNH CÔNG (ĐÃ NHẬN HÀNG)
   const totalRevenue = orders
     .filter((o) => o.status === "Đã nhận hàng")
     .reduce((acc, curr) => acc + (Number(curr.totalAmount) || 0), 0);
@@ -181,12 +275,12 @@ const OrderManagement = () => {
       <div className="admin_header_hero">
         <div className="admin_hero_content">
           <div className="admin_badge_role">
-            <i className="bi bi-receipt-cutoff me-2"></i> QUẢN LÝ ĐƠN HÀNG KHÁCH ĐẶT
+            <i className="bi bi-receipt-cutoff me-2"></i> QUẢN LÝ ĐƠN HÀNG & LÊN LỊCH GIAO
           </div>
           <h1>Quản Lý Đơn Hàng <span>HomeSHOP</span></h1>
           <p className="admin_hero_subtitle">
-            Hệ thống tiếp nhận đơn hàng trực tuyến, xác nhận đơn hàng từ khách, điều phối vận chuyển 
-            và theo dõi tiến độ giao nhận theo thời gian thực.
+            Hệ thống tiếp nhận duyệt đơn hàng từ khách, ấn định chính xác ngày giờ giao hàng, 
+            điều phối vận chuyển và tự động ghi nhận doanh thu khi khách nhận hàng thành công.
           </p>
         </div>
         <div className="admin_quick_actions">
@@ -228,10 +322,10 @@ const OrderManagement = () => {
               <i className="bi bi-bell-fill text-warning"></i>
             </div>
             <div className="metric_info">
-              <span className="metric_title">Cần Xác Nhận</span>
+              <span className="metric_title">Cần Xác Nhận & Hẹn Giờ</span>
               <h3 className="text-warning">{loading ? "..." : pendingCount}</h3>
               <p className="metric_sub">
-                <i className="bi bi-exclamation-circle me-1"></i> Đơn khách vừa đặt đang chờ duyệt
+                <i className="bi bi-calendar2-event me-1"></i> Đang chờ Admin ấn định lịch giao
               </p>
             </div>
           </div>
@@ -244,7 +338,7 @@ const OrderManagement = () => {
               <span className="metric_title">Đang Giao Hàng</span>
               <h3>{loading ? "..." : shippingCount}</h3>
               <p className="metric_sub">
-                <i className="bi bi-geo-alt me-1"></i> Đang trên đường vận chuyển
+                <i className="bi bi-geo-alt me-1"></i> Đang vận chuyển tới địa chỉ khách
               </p>
             </div>
           </div>
@@ -332,7 +426,7 @@ const OrderManagement = () => {
               className={`filter_tab_btn tab_delivered ${activeFilter === "Đã nhận hàng" ? "active" : ""}`}
               onClick={() => setActiveFilter("Đã nhận hàng")}
             >
-              <i className="bi bi-box2-heart me-1"></i> Hoàn Tất ({deliveredCount})
+              <i className="bi bi-box2-heart me-1"></i> Đã Nhận Hàng ({deliveredCount})
             </button>
             <button
               className={`filter_tab_btn tab_cancelled ${activeFilter === "Đã hủy" ? "active" : ""}`}
@@ -365,11 +459,11 @@ const OrderManagement = () => {
                   <tr>
                     <th>Mã Đơn</th>
                     <th>Khách Hàng</th>
-                    <th>Địa Chỉ Nhận Hàng</th>
+                    <th>Địa Chỉ Nhận</th>
                     <th>Sản Phẩm</th>
                     <th>Tổng Tiền</th>
                     <th>Thanh Toán</th>
-                    <th>Trạng Thái</th>
+                    <th>Trạng Thái & Lịch Giao</th>
                     <th className="text-center">Thao Tác</th>
                   </tr>
                 </thead>
@@ -436,7 +530,7 @@ const OrderManagement = () => {
                               className="btn_view_items_link"
                               onClick={() => handleViewDetails(order)}
                             >
-                              Xem món <i className="bi bi-chevron-right"></i>
+                              Chi tiết <i className="bi bi-chevron-right"></i>
                             </button>
                           </div>
                         </td>
@@ -463,34 +557,45 @@ const OrderManagement = () => {
                           </div>
                         </td>
 
-                        {/* Trạng Thái */}
+                        {/* Trạng Thái & Lịch Giao Hàng */}
                         <td>
                           {renderStatusBadge(order.status)}
-                          <div className="status_estimate_text">
-                            <i className="bi bi-clock me-1"></i>
-                            {order.estimatedDelivery || "2 - 4 ngày"}
-                          </div>
+                          
+                          {/* Lịch giao hàng cụ thể */}
+                          {order.deliveryDate || order.deliveryTime ? (
+                            <div
+                              className="status_scheduled_pill"
+                              onClick={() => openScheduleModal(order)}
+                              title="Bấm để chỉnh sửa ngày giờ giao hàng"
+                            >
+                              <i className="bi bi-calendar-check-fill text-primary me-1"></i>
+                              <span>{order.deliveryTime || "Trong ngày"}</span>
+                              <span className="ms-1 fw-bold">({formatDisplayDate(order.deliveryDate) || order.estimatedDelivery})</span>
+                              <i className="bi bi-pencil-fill ms-1 edit_hint_icon"></i>
+                            </div>
+                          ) : (
+                            <div className="status_estimate_text">
+                              <i className="bi bi-clock me-1"></i>
+                              {order.status === "Chờ xác nhận"
+                                ? "Chưa ấn định giờ giao"
+                                : order.estimatedDelivery || "2 - 4 ngày"}
+                            </div>
+                          )}
                         </td>
 
                         {/* Thao Tác */}
                         <td>
                           <div className="order_action_group">
-                            {/* Nút bấm nhanh Xác Nhận cho đơn Chờ xác nhận */}
+                            {/* Nút bấm Xác Nhận Kèm Lên Lịch Giao */}
                             {order.status === "Chờ xác nhận" && (
                               <button
                                 type="button"
                                 className="btn_quick_confirm"
                                 disabled={isOrderLoading}
-                                onClick={() => handleUpdateStatus(orderId, "Đã xác nhận")}
-                                title="Bấm để xác nhận đơn hàng ngay"
+                                onClick={() => openScheduleModal(order)}
+                                title="Xác nhận đơn và quyết định ngày giờ giao hàng"
                               >
-                                {isOrderLoading ? (
-                                  <span className="spinner-border spinner-border-sm" role="status"></span>
-                                ) : (
-                                  <>
-                                    <i className="bi bi-check-circle-fill me-1"></i> Xác Nhận Đơn
-                                  </>
-                                )}
+                                <i className="bi bi-calendar2-check-fill me-1"></i> Xác Nhận & Hẹn Giờ
                               </button>
                             )}
 
@@ -538,7 +643,178 @@ const OrderManagement = () => {
         </div>
       </div>
 
-      {/* Modal Xem Chi Tiết Đơn Hàng */}
+      {/* ==================== MODAL 1: LÊN LỊCH GIAO HÀNG & XÁC NHẬN ĐƠN ==================== */}
+      {showScheduleModal && schedulingOrder && (
+        <div className="modal_backdrop_admin" onClick={() => setShowScheduleModal(false)}>
+          <div className="modal_box_admin schedule_modal_box" onClick={(e) => e.stopPropagation()}>
+            <div className="modal_header_admin">
+              <div>
+                <h4 className="modal-title">
+                  <i className="bi bi-calendar2-check text-primary me-2"></i>
+                  Xác Nhận Đơn & Quyết Định Lịch Giao Hàng
+                </h4>
+                <p className="modal_sub">
+                  Đơn hàng <strong>#{schedulingOrder.orderCode || schedulingOrder.id}</strong> — Khách: <strong>{schedulingOrder.customerName}</strong> ({schedulingOrder.customerPhone})
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn_close_admin_modal"
+                onClick={() => setShowScheduleModal(false)}
+              >
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <form onSubmit={handleConfirmWithSchedule}>
+              <div className="modal_body_admin">
+                {/* Thông tin nhận hàng của khách */}
+                <div className="delivery_dest_summary mb-3">
+                  <div className="dest_icon"><i className="bi bi-geo-alt-fill text-danger"></i></div>
+                  <div>
+                    <strong>Địa chỉ giao hàng:</strong>
+                    <p className="m-0 text-muted">{schedulingOrder.shippingAddress}</p>
+                    {schedulingOrder.notes && (
+                      <span className="badge_cust_note">Khách nhắn: "{schedulingOrder.notes}"</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* 1. Chọn ngày giao hàng */}
+                <div className="form-group mb-3">
+                  <label className="fw-bold mb-1">
+                    <i className="bi bi-calendar-event text-primary me-1"></i> Ngày Giao Hàng Dự Kiến:
+                  </label>
+                  <div className="quick_chips_row mb-2">
+                    <button
+                      type="button"
+                      className={`btn_date_chip ${deliveryDate === getTodayDate() ? "active" : ""}`}
+                      onClick={() => setDeliveryDate(getTodayDate())}
+                    >
+                      Hôm Nay ({formatDisplayDate(getTodayDate())})
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn_date_chip ${deliveryDate === getTomorrowDate() ? "active" : ""}`}
+                      onClick={() => setDeliveryDate(getTomorrowDate())}
+                    >
+                      Ngày Mai ({formatDisplayDate(getTomorrowDate())})
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn_date_chip ${deliveryDate === getAfterTwoDaysDate() ? "active" : ""}`}
+                      onClick={() => setDeliveryDate(getAfterTwoDaysDate())}
+                    >
+                      Sau 2 Ngày ({formatDisplayDate(getAfterTwoDaysDate())})
+                    </button>
+                  </div>
+                  <input
+                    type="date"
+                    className="form-control admin_date_input"
+                    value={deliveryDate}
+                    onChange={(e) => setDeliveryDate(e.target.value)}
+                    required
+                  />
+                </div>
+
+                {/* 2. Chọn khung giờ hoặc giờ cụ thể */}
+                <div className="form-group mb-3">
+                  <label className="fw-bold mb-1">
+                    <i className="bi bi-clock-history text-primary me-1"></i> Giờ Giao Hàng Cụ Thể:
+                  </label>
+                  <div className="time_slots_grid mb-2">
+                    <button
+                      type="button"
+                      className={`btn_time_slot ${deliveryTime === "09:00 - 11:30 (Buổi Sáng)" && !customTime ? "active" : ""}`}
+                      onClick={() => { setDeliveryTime("09:00 - 11:30 (Buổi Sáng)"); setCustomTime(""); }}
+                    >
+                      <i className="bi bi-sun me-1 text-warning"></i> Sáng (09:00 - 11:30)
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn_time_slot ${deliveryTime === "14:00 - 16:30 (Buổi Chiều)" && !customTime ? "active" : ""}`}
+                      onClick={() => { setDeliveryTime("14:00 - 16:30 (Buổi Chiều)"); setCustomTime(""); }}
+                    >
+                      <i className="bi bi-brightness-high me-1 text-primary"></i> Chiều (14:00 - 16:30)
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn_time_slot ${deliveryTime === "17:30 - 20:00 (Buổi Tối)" && !customTime ? "active" : ""}`}
+                      onClick={() => { setDeliveryTime("17:30 - 20:00 (Buổi Tối)"); setCustomTime(""); }}
+                    >
+                      <i className="bi bi-moon-stars me-1 text-indigo"></i> Tối (17:30 - 20:00)
+                    </button>
+                  </div>
+
+                  <div className="custom_time_wrap">
+                    <span className="small text-muted me-2">Hoặc nhập giờ chính xác (VD: 15:30):</span>
+                    <input
+                      type="text"
+                      className="form-control form-control-sm"
+                      placeholder="VD: 10:15 hoặc 15:30"
+                      value={customTime}
+                      onChange={(e) => setCustomTime(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* 3. Ghi chú điều phối */}
+                <div className="form-group mb-3">
+                  <label className="fw-bold mb-1">
+                    <i className="bi bi-pencil-square text-primary me-1"></i> Lời Nhắn Cho Shipper & Khách Hàng:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="VD: Shipper gọi trước 15 phút, khách đồng kiểm hàng..."
+                    value={deliveryNote}
+                    onChange={(e) => setDeliveryNote(e.target.value)}
+                  />
+                </div>
+
+                {/* Preview Hẹn Giờ */}
+                <div className="schedule_preview_box">
+                  <div className="preview_badge_tag">LỊCH HẸN GIAO HÀNG SẼ HIỂN THỊ CHO KHÁCH:</div>
+                  <div className="preview_appointment_text">
+                    <i className="bi bi-alarm-fill text-primary me-2 fs-5"></i>
+                    <strong>{customTime ? customTime : deliveryTime}</strong> — Ngày <strong>{formatDisplayDate(deliveryDate)}</strong>
+                  </div>
+                  <div className="preview_sub_hint">
+                    Sau khi Admin bấm xác nhận, khách hàng vào mục <strong>Tài Khoản</strong> sẽ thấy ngay lịch hẹn này để chờ nhận hàng.
+                  </div>
+                </div>
+              </div>
+
+              <div className="modal_footer_admin">
+                <button
+                  type="button"
+                  className="btn_modal_close me-2"
+                  onClick={() => setShowScheduleModal(false)}
+                >
+                  Đóng
+                </button>
+                <button
+                  type="submit"
+                  disabled={scheduleLoading}
+                  className="btn_confirm_schedule_submit"
+                >
+                  {scheduleLoading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2"></span> Đang lưu...
+                    </>
+                  ) : (
+                    <>
+                      <i className="bi bi-check2-circle me-1"></i> Xác Nhận Đơn & Lên Lịch Giao
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== MODAL 2: XEM CHI TIẾT ĐƠN HÀNG ==================== */}
       {showDetailModal && selectedOrder && (
         <div className="modal_backdrop_admin" onClick={() => setShowDetailModal(false)}>
           <div className="modal_box_admin order_detail_modal" onClick={(e) => e.stopPropagation()}>
@@ -569,8 +845,10 @@ const OrderManagement = () => {
                   <div>{renderStatusBadge(selectedOrder.status)}</div>
                 </div>
                 <div className="status_row_modal">
-                  <span>Thời gian nhận hàng dự kiến:</span>
-                  <strong className="text-primary">{selectedOrder.estimatedDelivery || "2 - 4 ngày làm việc"}</strong>
+                  <span>Lịch giao đã ấn định:</span>
+                  <strong className="text-primary">
+                    {selectedOrder.estimatedDelivery || "Chưa ấn định"}
+                  </strong>
                 </div>
               </div>
 
@@ -596,6 +874,11 @@ const OrderManagement = () => {
                   {selectedOrder.notes && (
                     <p className="order_modal_note">
                       <strong>Ghi chú:</strong> {selectedOrder.notes}
+                    </p>
+                  )}
+                  {selectedOrder.deliveryNote && (
+                    <p className="order_modal_note mt-1 text-primary">
+                      <strong>Lời nhắn shipper:</strong> {selectedOrder.deliveryNote}
                     </p>
                   )}
                 </div>
@@ -672,15 +955,17 @@ const OrderManagement = () => {
               <div className="modal_status_controller">
                 <label className="fw-bold me-2">Chuyển trạng thái đơn hàng:</label>
                 <div className="modal_status_buttons">
-                  {selectedOrder.status !== "Đã xác nhận" && (
-                    <button
-                      type="button"
-                      className="btn_status_change btn_confirm"
-                      onClick={() => handleUpdateStatus(selectedOrder.id || selectedOrder._id, "Đã xác nhận")}
-                    >
-                      <i className="bi bi-check2-circle me-1"></i> Xác Nhận Đơn
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className="btn_status_change btn_confirm"
+                    onClick={() => {
+                      setShowDetailModal(false);
+                      openScheduleModal(selectedOrder);
+                    }}
+                  >
+                    <i className="bi bi-calendar-check me-1"></i> Đổi Lịch Giao / Xác Nhận
+                  </button>
+
                   {selectedOrder.status !== "Đang giao hàng" && (
                     <button
                       type="button"

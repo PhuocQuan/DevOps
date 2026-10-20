@@ -7340,3 +7340,400 @@ button:last-child:hover {
     display: none;
   }
 }
+
+/* ==========================================================================
+   ADMIN & ORDER MANAGEMENT: LÊN LỊCH & ẤN ĐỊNH NGÀY GIỜ GIAO HÀNG
+   ========================================================================== */
+.schedule_modal_box {
+  background: white;
+  border-radius: 20px;
+  max-width: 580px;
+  width: 95%;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: modalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal_header_schedule {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal_header_schedule h4 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.modal_header_schedule p {
+  margin: 3px 0 0 0;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.modal_header_schedule .btn_close_icon {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal_header_schedule .btn_close_icon:hover {
+  background: rgba(239, 68, 68, 0.8);
+  transform: rotate(90deg);
+}
+
+.modal_body_schedule {
+  padding: 20px 24px;
+  background: #f8fafc;
+}
+
+.schedule_order_brief {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+}
+
+.brief_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.brief_customer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.quick_chips_row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.btn_date_chip {
+  background: white;
+  border: 1.5px solid #cbd5e1;
+  padding: 6px 13px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn_date_chip:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+.btn_date_chip.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.admin_date_input {
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.admin_date_input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.time_slots_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.btn_time_slot {
+  background: white;
+  border: 1.5px solid #cbd5e1;
+  padding: 9px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.btn_time_slot:hover {
+  border-color: #0284c7;
+  color: #0284c7;
+  background: #f0f9ff;
+}
+
+.btn_time_slot.active {
+  background: #0284c7;
+  border-color: #0284c7;
+  color: white;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+}
+
+.custom_time_wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  background: white;
+  border: 1px dashed #cbd5e1;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.schedule_preview_box {
+  background: #eff6ff;
+  border: 2px dashed #93c5fd;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.preview_badge_tag {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #1d4ed8;
+  margin-bottom: 5px;
+}
+
+.preview_appointment_text {
+  font-size: 15px;
+  color: #1e3a8a;
+  margin-bottom: 4px;
+}
+
+.preview_sub_hint {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.btn_confirm_schedule_submit {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+}
+
+.btn_confirm_schedule_submit:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.btn_confirm_schedule_submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn_schedule_action {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.btn_schedule_action:hover {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.status_scheduled_pill {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge_scheduled_tag {
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.scheduled_notice {
+  font-size: 12px;
+  color: #0284c7;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   USER PROFILE: THẺ LỊCH HẸN GIAO HÀNG TỪ ADMIN
+   ========================================================================== */
+.order_appointment_card {
+  background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+  border: 2px solid #86efac;
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.08);
+}
+
+.appointment_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.appointment_badge {
+  background: #15803d;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.appointment_status_pill {
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.appointment_main_time {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 10px;
+}
+
+.appointment_main_time .time_block,
+.appointment_main_time .date_block {
+  display: flex;
+  flex-direction: column;
+}
+
+.appointment_main_time .time_label,
+.appointment_main_time .date_label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.appointment_main_time .time_val,
+.appointment_main_time .date_val {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+}
+
+.appointment_main_time .divider_v {
+  width: 2px;
+  height: 32px;
+  background: #e2e8f0;
+}
+
+.appointment_note {
+  font-size: 12.5px;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 7px 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.appointment_address {
+  font-size: 13px;
+  color: #334155;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .time_slots_grid {
+    grid-template-columns: 1fr;
+  }
+  .appointment_main_time {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .appointment_main_time .divider_v {
+    display: none;
+  }
+}
+

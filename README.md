@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# 🛒 HomeShop - Đồ Án DevOps & Triển Khai Cloud
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dự án website thương mại điện tử **HomeShop**, được thiết kế theo kiến trúc chuẩn Fullstack (Frontend React + Backend Express + Cơ sở dữ liệu đám mây MongoDB Atlas) và triển khai tự động hóa CI/CD với Docker trên hạ tầng AWS EC2.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📁 Cấu trúc dự án (Architecture Structure)
 
-### `npm start`
+```text
+DevOps/
+├── backend/                   # 🚀 MÃ NGUỒN BACKEND & DATABASE
+│   ├── models/                # Schemas Mongoose (Product.js, User.js)
+│   ├── bao.json               # Dữ liệu ban đầu phục vụ auto-seed
+│   ├── package.json           # Dependencies backend (express, mongoose, cors, dotenv)
+│   ├── server.js              # Express API Server kết nối MongoDB Atlas
+│   └── README.md              # Hướng dẫn chi tiết về Backend & API
+│
+├── src/                       # 🎨 MÃ NGUỒN FRONTEND (REACT JS)
+│   ├── Components/            # Các trang giao diện (Home, Admin, Member1-5, Detail, ...)
+│   ├── App.js                 # Router & điều hướng phân quyền (Auth Guard)
+│   ├── App.css                # Tùy biến kiểu dáng giao diện
+│   └── index.js               # Entry point React
+│
+├── public/                    # Tài nguyên tĩnh (Hình ảnh, Banners, Icons)
+│   └── images/                # Banners carousel, banner bedroom, hình ảnh sản phẩm
+│
+├── .github/workflows/         # 🔄 CI/CD Pipeline (GitHub Actions)
+│   └── deploy.yml             # Tự động Build & Push Docker image lên Docker Hub
+│
+├── Dockerfile                 # Multi-stage Docker build (React build + Nginx + Node Backend)
+├── docker-compose.yml         # File khởi chạy container môi trường local
+├── docker-compose.prod.yml    # File khởi chạy container trên Cloud Server (AWS EC2)
+├── Jenkinsfile                # Pipeline Jenkins phục vụ tự động hóa triển khai
+├── nginx.conf                 # Cấu hình Web Server Nginx & Reverse Proxy tới API Backend
+└── README.md                  # Tài liệu tổng quan dự án
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🌐 Cơ sở dữ liệu Online (MongoDB Atlas)
 
-### `npm test`
+* Dự án sử dụng **MongoDB Atlas** (Database online trên nền tảng đám mây) theo đúng yêu cầu đề bài.
+* **Tên Database:** `homeshop`
+* **Các bảng dữ liệu (Collections):**
+  * `products`: 56 sản phẩm thuộc các danh mục (Phòng khách, Phòng ngủ, Bếp, Gia dụng,...).
+  * `users`: Danh sách tài khoản người dùng và tài khoản quản trị viên.
+* **Cơ chế đồng bộ:** Mọi thao tác Thêm / Sửa / Xóa sản phẩm và tài khoản người dùng trên trang Admin đều được cập nhật và lưu trực tiếp lên Cloud MongoDB Atlas.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🛠️ API Endpoints chính (Backend)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* **Health Check:** `GET /api/health` — Kiểm tra trạng thái máy chủ và kết nối MongoDB Atlas.
+* **Sản phẩm:**
+  * `GET /api/products` — Lấy danh sách sản phẩm từ MongoDB Atlas
+  * `POST /api/products` — Thêm sản phẩm mới
+  * `PUT /api/products/:id` — Chỉnh sửa sản phẩm
+  * `DELETE /api/products/:id` — Xóa sản phẩm
+* **Người dùng & Phân quyền:**
+  * `GET /api/user` — Danh sách người dùng
+  * `POST /api/user` — Đăng ký / thêm người dùng
+  * `PUT /api/user/:id` — Cập nhật thông tin người dùng
+  * `DELETE /api/user/:id` — Xóa người dùng
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Triển khai & Vận hành (DevOps)
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* **Cloud Server:** AWS EC2 (Ubuntu 22.04 LTS)
+* **Web Server & Reverse Proxy:** Nginx (Port 80)
+* **API Server:** Express.js (Port 2300, proxy qua Nginx `/api/`)
+* **Containerization:** Docker & Docker Compose
+* **CI/CD:** GitHub Actions tự động build Docker Image và đẩy lên Docker Hub (`quan109/front_dep:latest`).

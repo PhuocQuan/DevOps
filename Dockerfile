@@ -18,10 +18,10 @@ RUN apk add --no-cache nodejs npm
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Thiết lập thư mục Backend Server
-WORKDIR /app/server
-COPY server/package*.json ./
+WORKDIR /app/backend
+COPY backend/package*.json ./
 RUN npm install --omit=dev
-COPY server/ ./
+COPY backend/ ./
 
 # Copy cấu hình Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
@@ -30,4 +30,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80 2300
 
 # Chạy Backend Node.js (kết nối MongoDB Atlas) và Nginx
-CMD node /app/server/server.js & nginx -g "daemon off;"
+CMD node /app/backend/server.js & nginx -g "daemon off;"

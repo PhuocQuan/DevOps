@@ -20,6 +20,7 @@ import Support from "./Components/Support";
 import Admin from "./Components/Admin"
 import UserManagemant from "./Components/UserManagement"
 import ProductManagement from "./Components/ProductManagement";
+import OrderManagement from "./Components/OrderManagement";
 import UserProfile from "./Components/UserProfile";
 import "./App.css";
 
@@ -88,6 +89,9 @@ const AdminNavbar = () => (
     <div className="nav_links">
       <Link to="/admin" className="nav_link">
         <i className="bi bi-speedometer2"></i> Tổng Quan
+      </Link>
+      <Link to="/ordermanagement" className="nav_link">
+        <i className="bi bi-receipt"></i> Quản Lý Đơn Hàng
       </Link>
       <Link to="/productmanagement" className="nav_link">
         <i className="bi bi-box-seam"></i> Quản Lý Sản Phẩm
@@ -183,13 +187,14 @@ const UserNavbar = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/cart" element={isAdmin ? <Navigate to="/admin" replace /> : (isLoggedIn ? <Cart cartItems={cartItems} setCartItems={setCartItems} removeFromCart={removeFromCart} /> : <Navigate to="/login" replace />)} />
           <Route path="/checkout" element={<Checkout clearCart={clearCart} />} />
-          <Route path="/checkout-form" element={<CheckoutForm clearCart={clearCart} userData={user}/>} />
+          <Route path="/checkout-form" element={<CheckoutForm clearCart={clearCart} userData={user} cartItems={cartItems}/>} />
           <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} setUser={setUser} />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/admin" element={isAdmin ? <Admin /> : <Navigate to="/login" replace />} />
           <Route path="/usermanagement" element={isAdmin ? <UserManagemant /> : <Navigate to="/login" replace />} />
           <Route path="/productmanagement" element={isAdmin ? <ProductManagement /> : <Navigate to="/login" replace />} />
+          <Route path="/ordermanagement" element={isAdmin ? <OrderManagement /> : <Navigate to="/login" replace />} />
           <Route path="/profile" element={isLoggedIn ? <UserProfile /> : <Navigate to="/login" replace />} />
           <Route path="/product/:productId" element={isLoggedIn ? <ProductDetail addToCart={addToCart} /> : <Navigate to="/login" replace />} />
           <Route path="/member1" element={<Member1 addToCart={addToCart} />} />

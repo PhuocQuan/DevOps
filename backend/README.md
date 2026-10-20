@@ -10,7 +10,8 @@ Thư mục này chứa toàn bộ mã nguồn **Backend** của dự án HomeSho
 backend/
 ├── models/
 │   ├── Product.js          # Mongoose Schema & Model cho bảng Sản phẩm
-│   └── User.js             # Mongoose Schema & Model cho bảng Người dùng / Admin
+│   ├── User.js             # Mongoose Schema & Model cho bảng Người dùng / Admin
+│   └── Order.js            # Mongoose Schema & Model cho bảng Đơn hàng khách đặt
 ├── auth-server/            # Phiên bản server xác thực cũ (lưu trữ tham khảo)
 ├── bao.json                # Dữ liệu ban đầu (56 sản phẩm & tài khoản mẫu để auto-seed)
 ├── package.json            # Cấu hình dependencies (express, mongoose, cors, dotenv)
@@ -38,13 +39,29 @@ backend/
 * **Collections:**
   * `products`: Lưu trữ 56 sản phẩm với đầy đủ thông tin (tên, giá, số lượng, mô tả, hình ảnh).
   * `users`: Lưu trữ thông tin tài khoản, mật khẩu, quyền quản trị (admin / user).
+  * `orders`: Lưu trữ đơn hàng khách đặt, chi tiết sản phẩm, trạng thái duyệt và phương thức thanh toán.
 * **Cơ chế Auto-seed:** Khi khởi động lần đầu, nếu database rỗng, server sẽ tự động trích xuất dữ liệu từ `bao.json` và nạp trực tiếp lên MongoDB Atlas Cloud.
 
 ---
 
 ## 4. Danh sách API Endpoints
 
-### A. Quản lý Sản phẩm (Products)
+### A. Quản lý Đơn hàng Khách đặt (Orders)
+| Method | Endpoint | Mô tả |
+|---|---|---|
+| `GET` | `/api/orders` | Lấy danh sách tất cả đơn hàng (xếp mới nhất lên đầu) |
+| `GET` | `/api/orders/:id` | Xem chi tiết 1 đơn hàng (thông tin khách, món hàng, tiến độ) |
+| `POST` | `/api/orders` | Khách đặt hàng mới (lưu vào database, trạng thái: "Chờ xác nhận") |
+| `PUT` | `/api/orders/:id` | Admin cập nhật trạng thái đơn ("Đã xác nhận", "Đang giao", "Đã nhận") |
+| `DELETE` | `/api/orders/:id` | Hủy hoặc xóa đơn hàng khỏi database |
+
+### B. Vòng đời đơn hàng (Order Lifecycle)
+1. **Chờ xác nhận (Pending):** Khách đặt hàng và chọn phương thức thanh toán xong, đơn hàng được gửi vào trang quản trị Admin.
+2. **Đã xác nhận (Confirmed):** Admin kiểm tra thông tin và bấm nút "Xác nhận đơn" để tiến hành đóng gói.
+3. **Đang giao hàng (Shipping):** Đơn hàng được chuyển cho đơn vị vận chuyển giao tới khách hàng (Dự kiến 2 - 4 ngày).
+4. **Đã nhận hàng (Delivered):** Khách nhận hàng thành công và hoàn tất đơn hàng.
+
+### C. Quản lý Sản phẩm (Products)
 | Method | Endpoint | Mô tả |
 |---|---|---|
 | `GET` | `/api/products` | Lấy danh sách tất cả sản phẩm từ MongoDB |
@@ -52,7 +69,7 @@ backend/
 | `PUT` | `/api/products/:id` | Cập nhật thông tin sản phẩm theo `_id` |
 | `DELETE` | `/api/products/:id` | Xóa sản phẩm khỏi database theo `_id` |
 
-### B. Quản lý Người dùng & Tài khoản (Users)
+### D. Quản lý Người dùng & Tài khoản (Users)
 | Method | Endpoint | Mô tả |
 |---|---|---|
 | `GET` | `/api/user` | Lấy danh sách tất cả tài khoản |
@@ -60,7 +77,7 @@ backend/
 | `PUT` | `/api/user/:id` | Cập nhật thông tin cá nhân / mật khẩu / vai trò |
 | `DELETE` | `/api/user/:id` | Xóa tài khoản theo `_id` |
 
-### C. Kiểm tra trạng thái hệ thống (Health Check)
+### E. Kiểm tra trạng thái hệ thống (Health Check)
 | Method | Endpoint | Trả về |
 |---|---|---|
 | `GET` | `/api/health` | `{"status": "ok", "database": "MongoDB Atlas Connected", "timestamp": "..."}` |

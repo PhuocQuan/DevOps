@@ -9,14 +9,14 @@ Dự án website thương mại điện tử **HomeShop**, được thiết kế
 ```text
 DevOps/
 ├── backend/                   # 🚀 MÃ NGUỒN BACKEND & DATABASE
-│   ├── models/                # Schemas Mongoose (Product.js, User.js)
+│   ├── models/                # Schemas Mongoose (Product.js, User.js, Order.js)
 │   ├── bao.json               # Dữ liệu ban đầu phục vụ auto-seed
 │   ├── package.json           # Dependencies backend (express, mongoose, cors, dotenv)
 │   ├── server.js              # Express API Server kết nối MongoDB Atlas
 │   └── README.md              # Hướng dẫn chi tiết về Backend & API
 │
 ├── src/                       # 🎨 MÃ NGUỒN FRONTEND (REACT JS)
-│   ├── Components/            # Các trang giao diện (Home, Admin, Member1-5, Detail, ...)
+│   ├── Components/            # Các trang giao diện (Home, Admin, OrderManagement, ...)
 │   ├── App.js                 # Router & điều hướng phân quyền (Auth Guard)
 │   ├── App.css                # Tùy biến kiểu dáng giao diện
 │   └── index.js               # Entry point React
@@ -44,13 +44,19 @@ DevOps/
 * **Các bảng dữ liệu (Collections):**
   * `products`: 56 sản phẩm thuộc các danh mục (Phòng khách, Phòng ngủ, Bếp, Gia dụng,...).
   * `users`: Danh sách tài khoản người dùng và tài khoản quản trị viên.
-* **Cơ chế đồng bộ:** Mọi thao tác Thêm / Sửa / Xóa sản phẩm và tài khoản người dùng trên trang Admin đều được cập nhật và lưu trực tiếp lên Cloud MongoDB Atlas.
+  * `orders`: Đơn hàng khách đặt, chi tiết từng món hàng, thông tin giao nhận, phương thức thanh toán và tiến độ xử lý.
+* **Quy trình đơn hàng:** Khách đặt hàng trực tuyến -> Chuyển sang Admin xác nhận -> Đóng gói & Vận chuyển (Dự kiến 2-4 ngày) -> Khách nhận hàng.
 
 ---
 
 ## 🛠️ API Endpoints chính (Backend)
 
 * **Health Check:** `GET /api/health` — Kiểm tra trạng thái máy chủ và kết nối MongoDB Atlas.
+* **Quản lý Đơn hàng (Orders):**
+  * `GET /api/orders` — Danh sách tất cả đơn hàng từ khách
+  * `POST /api/orders` — Khách đặt hàng mới (lưu vào MongoDB Atlas, trạng thái "Chờ xác nhận")
+  * `PUT /api/orders/:id` — Admin duyệt đơn hàng ("Xác nhận đơn", "Giao hàng", "Hoàn tất")
+  * `DELETE /api/orders/:id` — Xóa đơn hàng
 * **Sản phẩm:**
   * `GET /api/products` — Lấy danh sách sản phẩm từ MongoDB Atlas
   * `POST /api/products` — Thêm sản phẩm mới

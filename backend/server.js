@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const Product = require("./models/Product");
 const User = require("./models/User");
+const Order = require("./models/Order");
 
 const app = express();
 const PORT = process.env.PORT || 2300;
@@ -68,6 +69,79 @@ async function seedInitialData() {
         await User.insertMany(cleanUsers);
         console.log(`Đã thêm ${cleanUsers.length} người dùng lên MongoDB Atlas!`);
       }
+    }
+
+    // Seed sample orders if empty
+    const orderCount = await Order.countDocuments();
+    if (orderCount === 0) {
+      console.log("Seeding sample orders to MongoDB Atlas...");
+      const sampleOrders = [
+        {
+          orderCode: "HD-8241",
+          customerName: "Nguyễn Văn Hùng",
+          customerEmail: "hung.nguyen@gmail.com",
+          customerPhone: "0912345678",
+          shippingAddress: "123 Nguyễn Trãi, Quận 1, TP. Hồ Chí Minh",
+          notes: "Giao hàng giờ hành chính giúp mình",
+          items: [
+            {
+              name: "Máy Xay Sinh Tố Cầm Tay Đa Năng",
+              price: 650000,
+              quantity: 1,
+              imageLink: "/images/may-xay-cam-tay1.jpg",
+            },
+          ],
+          totalAmount: 650000,
+          paymentMethod: "Thanh toán khi nhận hàng (COD)",
+          paymentStatus: "Chưa thanh toán",
+          status: "Chờ xác nhận",
+          estimatedDelivery: "2 - 3 ngày làm việc",
+        },
+        {
+          orderCode: "HD-8242",
+          customerName: "Trần Thị Mai",
+          customerEmail: "maitran@gmail.com",
+          customerPhone: "0987654321",
+          shippingAddress: "45 Lê Lợi, Quận Hải Châu, Đà Nẵng",
+          notes: "Gọi trước khi giao 15 phút",
+          items: [
+            {
+              name: "Nồi Chiên Không Dầu Điện Tử 6L",
+              price: 1450000,
+              quantity: 1,
+              imageLink: "/images/noi-chien-khong-dau1.jpg",
+            },
+          ],
+          totalAmount: 1450000,
+          paymentMethod: "Chuyển khoản ngân hàng (QR Banking)",
+          paymentStatus: "Đã thanh toán",
+          status: "Đã xác nhận",
+          estimatedDelivery: "2 - 4 ngày làm việc",
+        },
+        {
+          orderCode: "HD-8243",
+          customerName: "Lê Hoàng Phúc",
+          customerEmail: "phuclh@gmail.com",
+          customerPhone: "0903332211",
+          shippingAddress: "78 Cầu Giấy, Quận Cầu Giấy, Hà Nội",
+          notes: "Giao vào cuối tuần",
+          items: [
+            {
+              name: "Robot Hút Bụi Lau Nhà Thông Minh",
+              price: 4500000,
+              quantity: 1,
+              imageLink: "/images/robot-hut-bui1.jpg",
+            },
+          ],
+          totalAmount: 4500000,
+          paymentMethod: "Thẻ tín dụng",
+          paymentStatus: "Đã thanh toán",
+          status: "Đang giao hàng",
+          estimatedDelivery: "1 - 2 ngày làm việc",
+        },
+      ];
+      await Order.insertMany(sampleOrders);
+      console.log(`Đã thêm ${sampleOrders.length} đơn hàng mẫu lên MongoDB Atlas!`);
     }
   } catch (err) {
     console.error("Lỗi khi seed dữ liệu ban đầu:", err);
@@ -211,6 +285,111 @@ app.put("/user/:id", updateUser);
 app.put("/api/user/:id", updateUser);
 app.delete("/user/:id", deleteUser);
 app.delete("/api/user/:id", deleteUser);
+
+// ==================== ROUTES: ORDERS ====================
+const getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi khi lấy danh sách đơn hàng", error: error.message });
+  }
+};
+
+const getOrderById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = findByIdQuery(id);
+    const order = await Order.findOne(query);
+    if (!order) {
+      return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+    }
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi khi lấy chi tiết đơn hàng", error: error.message });
+  }
+};
+
+const createOrder = async (req, res) => {
+  try {
+    const {
+      customerName,
+      customerEmail,
+      customerPhone,
+      shippingAddress,
+      notes,
+      items,
+      totalAmount,
+      paymentMethod,
+      paymentStatus,
+    } = req.body;
+
+    if (!customerName || !customerPhone || !shippingAddress) {
+      return res.status(400).json({ message: "Vui lòng nhập họ và tên, số điện thoại và địa chỉ giao hàng." });
+    }
+
+    const newOrder = new Order({
+      customerName,
+      customerEmail: customerEmail || "khachhang@homeshop.vn",
+      customerPhone,
+      shippingAddress,
+      notes: notes || "",
+      items: Array.isArray(items) ? items : [],
+      totalAmount: Number(totalAmount) || 0,
+      paymentMethod: paymentMethod || "Thanh toán khi nhận hàng (COD)",
+      paymentStatus: paymentStatus || (paymentMethod && paymentMethod.includes("COD") ? "Chưa thanh toán" : "Chưa thanh toán"),
+      status: "Chờ xác nhận",
+      estimatedDelivery: "2 - 4 ngày làm việc",
+    });
+
+    const saved = await newOrder.save();
+    console.log(`[Order Created] Đơn hàng ${saved.orderCode} từ ${saved.customerName} đã được lưu vào MongoDB Atlas`);
+    res.status(201).json(saved);
+  } catch (error) {
+    console.error("Lỗi khi tạo đơn hàng:", error);
+    res.status(400).json({ message: "Lỗi khi tạo đơn hàng", error: error.message });
+  }
+};
+
+const updateOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = findByIdQuery(id);
+    const updated = await Order.findOneAndUpdate(query, req.body, { new: true });
+    if (!updated) {
+      return res.status(404).json({ message: "Không tìm thấy đơn hàng để cập nhật" });
+    }
+    res.json(updated);
+  } catch (error) {
+    res.status(400).json({ message: "Lỗi khi cập nhật đơn hàng", error: error.message });
+  }
+};
+
+const deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = findByIdQuery(id);
+    const deleted = await Order.findOneAndDelete(query);
+    if (!deleted) {
+      return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+    }
+    res.json({ message: "Đã xóa đơn hàng thành công", id });
+  } catch (error) {
+    res.status(400).json({ message: "Lỗi khi xóa đơn hàng", error: error.message });
+  }
+};
+
+// Support both /orders and /api/orders
+app.get("/orders", getOrders);
+app.get("/api/orders", getOrders);
+app.get("/orders/:id", getOrderById);
+app.get("/api/orders/:id", getOrderById);
+app.post("/orders", createOrder);
+app.post("/api/orders", createOrder);
+app.put("/orders/:id", updateOrder);
+app.put("/api/orders/:id", updateOrder);
+app.delete("/orders/:id", deleteOrder);
+app.delete("/api/orders/:id", deleteOrder);
 
 // Health check endpoint
 app.get("/health", (req, res) => {
